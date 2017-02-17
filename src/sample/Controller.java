@@ -29,6 +29,7 @@ public class Controller implements Initializable {
     Slider speedSlider, zoomSlider;
     @FXML
     Text showGen;
+    
 
     //Controller class
 
