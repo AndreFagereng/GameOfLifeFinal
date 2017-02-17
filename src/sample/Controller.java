@@ -31,7 +31,7 @@ public class Controller implements Initializable {
     Text showGen;
 
     //Controller class
-    
+
     private Board board;
     private GraphicsContext gc;
     private AnimationTimer timer;
