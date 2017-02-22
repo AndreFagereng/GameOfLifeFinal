@@ -31,7 +31,11 @@ public class Board {
         cellGrid = new Cell[gridWidth][gridHeight];
         copyGrid = new Cell[gridWidth][gridHeight];
 
+        fillCellBoard();
 
+    }
+
+    public void fillCellBoard(){
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
                 cellGrid[i][j] = new Cell(cellHeight, cellWidth, false);
