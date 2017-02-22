@@ -1,4 +1,4 @@
-package sample;
+package model;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.binding.Bindings;
