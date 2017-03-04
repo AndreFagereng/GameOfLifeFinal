@@ -20,29 +20,47 @@ public class BoardTest {
     int gridWidth;
     int gridHeight;
     IntegerProperty generation = new SimpleIntegerProperty(this, "generation");
-    Board board;
+    Board boardWithNormalValues;
+    Board boardDifferent;
 
     @Test
     public void fillCellBoard() throws Exception {
-        board = new Board();
-        board.gridWidth = 80;
-        board.gridHeight = 46;
+        boardWithNormalValues = new Board();
+        boardDifferent = new Board();
 
-        board.cellGrid = new Cell[board.gridWidth][board.gridHeight];
-        board.copyGrid = new Cell[board.gridWidth][board.gridHeight];
+        int gridWidthNormalValues = boardWithNormalValues.gridWidth = 80;
+        int gridHeightNormalValues = boardWithNormalValues.gridHeight = 46;
+        int gridWidthDifferent = boardDifferent.gridWidth = 50;
+        int gridHeightDifferent = boardDifferent.gridHeight = 50;
+
+
+        boardWithNormalValues.cellGrid = new Cell[gridWidthNormalValues][gridHeightNormalValues];
+        boardWithNormalValues.copyGrid = new Cell[gridWidthNormalValues][gridHeightNormalValues];
+        boardDifferent.cellGrid = new Cell[gridWidthDifferent][gridHeightDifferent];
+        boardDifferent.copyGrid = new Cell[gridWidthDifferent][gridHeightDifferent];
 
         // The statement below must run for the assert to pass.
-        board.fillCellBoard();
+        // boardWithNormalValues.fillCellBoard();
+        boardDifferent.fillCellBoard();
 
         // If more than one cell is alive, the board is "filled"
-        for (int i = 0; i < board.gridWidth; i++) {
-            for (int j = 0; j < board.gridHeight; j++) {
-                if (board.cellGrid[i][j].getState()) {
+        for (int i = 0; i < boardWithNormalValues.gridWidth; i++) {
+            for (int j = 0; j < boardWithNormalValues.gridHeight; j++) {
+                if (boardWithNormalValues.cellGrid[i][j].getState()) {
                     assertTrue(true);
                 }
             }
         }
- }
+
+        // This for loop checks that the method still works even if the dimension is changed
+        for (int i = 0; i < boardDifferent.gridWidth; i++) {
+            for (int j = 0; j < boardDifferent.gridHeight; j++) {
+                if (boardDifferent.cellGrid[i][j].getState()) {
+                    assertTrue(true);
+                }
+            }
+        }
+    }
 
     @Test
     public void getCellGrid() throws Exception {
