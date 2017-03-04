@@ -14,12 +14,12 @@ public class Board {
     protected Cell cellGrid[][];
     protected int cellHeight;
     protected int cellWidth;
-    protected int cellSize = cellHeight = cellWidth = 15;
+    protected int cellSize = cellHeight = cellWidth = 10;
     protected int gridWidth;
     protected int gridHeight;
     protected IntegerProperty generation = new SimpleIntegerProperty(this, "generation");
 
-    public Board(){
+    public Board() {
 
     }
 
@@ -32,7 +32,6 @@ public class Board {
         copyGrid = new Cell[gridWidth][gridHeight];
 
         fillCellBoard();
-
     }
 
     public void fillCellBoard(){

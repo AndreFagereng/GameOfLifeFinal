@@ -12,23 +12,16 @@ import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    @FXML
-    Canvas canvas;
-    @FXML
-    Button startPauseBtn, clearBtn;
-    @FXML
-    ColorPicker colorPicker;
-    @FXML
-    Slider speedSlider, zoomSlider;
-    @FXML
-    Text showGen;
+    @FXML Canvas canvas;
+    @FXML Button startPauseBtn, clearBtn;
+    @FXML ColorPicker colorPicker;
+    @FXML Slider speedSlider, zoomSlider;
+    @FXML Text showGen;
     
 
     //Controller class
@@ -47,7 +40,6 @@ public class Controller implements Initializable {
         gc = canvas.getGraphicsContext2D();
         board = new Board(canvas);
         gdb = new GraphicsDisplayBoard(gc, canvas);
-
 
         onClickCellEvent();
         showGenerationText();
