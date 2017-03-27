@@ -34,7 +34,7 @@ public class Board {
         fillCellBoard();
     }
 
-    public void fillCellBoard(){
+    public void fillCellBoard() {
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
                 cellGrid[i][j] = new Cell(cellHeight, cellWidth, false);
@@ -61,10 +61,11 @@ public class Board {
         return cellGrid[x][y].getState();
     }
 
+    // Counting amount of neighbours
     public int countNeighbours(int x, int y) {
         int count = 0;
 
-        if (x != 0 && y != 0) {
+        /*if (x != 0 && y != 0) {
             if (checkCellAlive(x - 1, y - 1)) {
                 count++;
             }
@@ -101,6 +102,19 @@ public class Board {
             if (checkCellAlive(x + 1, y))
                 count++;
         }
+        return count;*/
+        try {
+            for (int xoffset = -1; xoffset < 2; xoffset++) {
+                for (int yoffset = -1; yoffset < 2; yoffset++) {
+                    if (checkCellAlive(x - xoffset,y - yoffset) && (xoffset != 0 || yoffset != 0)){
+                        count++;
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+
+        }
+
         return count;
     }
 

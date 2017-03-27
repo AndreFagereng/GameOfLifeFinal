@@ -5,7 +5,6 @@ package model;
  */
 public class Cell {
 
-
     private boolean cellState = false;
     private boolean newCellState = false;
 

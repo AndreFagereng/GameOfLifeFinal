@@ -20,6 +20,7 @@ public class BoardTest {
     int gridWidth;
     int gridHeight;
     IntegerProperty generation = new SimpleIntegerProperty(this, "generation");
+    Board board;
     Board boardWithNormalValues;
     Board boardDifferent;
 
@@ -30,8 +31,8 @@ public class BoardTest {
 
         int gridWidthNormalValues = boardWithNormalValues.gridWidth = 80;
         int gridHeightNormalValues = boardWithNormalValues.gridHeight = 46;
-        int gridWidthDifferent = boardDifferent.gridWidth = 50;
-        int gridHeightDifferent = boardDifferent.gridHeight = 50;
+        int gridWidthDifferent = boardDifferent.gridWidth = 100;
+        int gridHeightDifferent = boardDifferent.gridHeight = 100;
 
 
         boardWithNormalValues.cellGrid = new Cell[gridWidthNormalValues][gridHeightNormalValues];
@@ -40,7 +41,7 @@ public class BoardTest {
         boardDifferent.copyGrid = new Cell[gridWidthDifferent][gridHeightDifferent];
 
         // The statement below must run for the assert to pass.
-        // boardWithNormalValues.fillCellBoard();
+        boardWithNormalValues.fillCellBoard();
         boardDifferent.fillCellBoard();
 
         // If more than one cell is alive, the board is "filled"
@@ -64,7 +65,8 @@ public class BoardTest {
 
     @Test
     public void getCellGrid() throws Exception {
-        assertTrue(true);
+        board = new Board();
+        assertNull(board.getCellGrid());
     }
 
     @Test
