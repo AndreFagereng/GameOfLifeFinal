@@ -5,25 +5,37 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
     @FXML Canvas canvas;
-    @FXML Button startPauseBtn, clearBtn;
+    @FXML Button startPauseBtn, clearBtn, saveAs;
     @FXML ColorPicker colorPicker;
     @FXML Slider speedSlider, zoomSlider;
     @FXML Text showGen;
+    @FXML TextArea textAreaPattern;
     
 
     //Controller class
@@ -34,6 +46,7 @@ public class Controller implements Initializable {
     private int speed;
     private GraphicsDisplayBoard gdb;
     Color aliveCellColor;
+    Stage stage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -47,7 +60,7 @@ public class Controller implements Initializable {
         showGenerationText();
         timerMethod();
         onChangeColor();
-        //dragAndDrawEvent();
+        dragAndDrawEvent();
 
 
     }
@@ -128,11 +141,7 @@ public class Controller implements Initializable {
             int x = (int) (e.getX() / board.cellSize);
             int y = (int) (e.getY() / board.cellSize);
 
-            if (gdb.cellGrid[x][y].getState()) {
-                gdb.cellGrid[x][y].setState(false);
-                gc.clearRect(x * board.cellWidth, y * board.cellHeight, board.cellHeight - 1, board.cellWidth - 1);
-
-            } else if (!gdb.cellGrid[x][y].getState()) {
+            if (!gdb.cellGrid[x][y].getState()) {
                 gdb.cellGrid[x][y].setState(true);
 
                 gc.setFill(aliveCellColor);
@@ -141,6 +150,31 @@ public class Controller implements Initializable {
             }
         });
     }
+
+
+
+
+
+    public void createPattern() throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("../View/createOwnPattern.fxml"));
+        stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
+        stage.setTitle("Patterns");
+        stage.show();
+    }
+
+    public void closeButtonAction(){
+        // get a handle to the stage
+        Stage stage = (Stage) saveAs.getScene().getWindow();
+        // do what you have to do
+        stage.close();
+    }
+
+
+
+
+
 }
 
 
