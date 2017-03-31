@@ -109,7 +109,7 @@ public class Board {
                 count++;
         }
         return count;*/
-        try {
+        /*try {
             for (int xoffset = -1; xoffset < 2; xoffset++) {
                 for (int yoffset = -1; yoffset < 2; yoffset++) {
                     if (checkCellAlive(x - xoffset,y - yoffset) && (xoffset != 0 || yoffset != 0)) {
@@ -119,6 +119,14 @@ public class Board {
             }
         } catch (ArrayIndexOutOfBoundsException e) {
 
+        }*/
+
+        for (int xoffset = -1; xoffset < 2; xoffset++) {
+            for (int yoffset = -1; yoffset < 2; yoffset++) {
+                if (checkCellAlive(x - xoffset,y - yoffset) && (xoffset != 0 || yoffset != 0)) {
+                    count++;
+                }
+            }
         }
 
         return count;

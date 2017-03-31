@@ -119,6 +119,9 @@ public class Controller implements Initializable {
             int x = (int) (e.getX() / board.cellSize);
             int y = (int) (e.getY() / board.cellSize);
 
+            if (x == -1 || y == -1 || x == board.gridWidth || y == board.gridHeight) {
+                throw new ArrayIndexOutOfBoundsException();
+            }
             if (gdb.cellGrid[x][y].getState()) {
                 gdb.cellGrid[x][y].setState(false);
 
