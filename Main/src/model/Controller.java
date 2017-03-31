@@ -21,7 +21,9 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -47,6 +49,10 @@ public class Controller implements Initializable {
     private GraphicsDisplayBoard gdb;
     Color aliveCellColor;
     Stage stage;
+    FileChooser fileChooser;
+    File RLEFormatFile;
+    FileReader fileReader;
+    BufferedReader bufferedReader;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -138,7 +144,7 @@ public class Controller implements Initializable {
         });
     }
 
-    public void dragAndDrawEvent() {
+    public void dragAndDrawEvent(){
         canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
 
             int x = (int) (e.getX() / board.cellSize);
@@ -154,10 +160,6 @@ public class Controller implements Initializable {
         });
     }
 
-
-
-
-
     public void createPattern() throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../View/createOwnPattern.fxml"));
         stage = new Stage();
@@ -166,15 +168,57 @@ public class Controller implements Initializable {
         stage.setTitle("Patterns");
         stage.show();
     }
-
+    /*
     public void closeButtonAction(){
         // get a handle to the stage
         Stage stage = (Stage) saveAs.getScene().getWindow();
         // do what you have to do
         stage.close();
     }
+       */
+
+    public void readRLEPattern(File RLEFormatFile) throws Exception{
+        fileReader = new FileReader(RLEFormatFile);
+        bufferedReader = new BufferedReader(fileReader);
+        gdb.clearBoard(gc);
+
+        int nextChar;
+        int x = 10;
+        int y = 10;
+
+        try{
+
+            while((nextChar = bufferedReader.read()) != -1){
+                char c = (char) nextChar;
+
+                if (c == 'o') {
+                    gdb.cellGrid[x][y].setState(true);
+                    x++;
+                } else if (c == 'b') {
+                    gdb.cellGrid[x][y].setState(false);
+                    x++;
+                } else if (c == '$') {
+                    x = 5;
+                    y++;
+                }
+            }
+
+        }catch (NullPointerException NPE){
+            System.out.println("User did`nt select file");
+        }
+        gdb.drawNextGen(gc, colorPicker.getValue(), board);
+
+    }
 
 
+    public void openAndReadRLEFormat() throws Exception{
+        fileChooser = new FileChooser();
+        RLEFormatFile = fileChooser.showOpenDialog(null);
+
+        if(RLEFormatFile != null){
+            readRLEPattern(RLEFormatFile);
+        }
+    }
 
 
 

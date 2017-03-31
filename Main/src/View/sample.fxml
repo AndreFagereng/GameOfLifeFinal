@@ -23,6 +23,7 @@
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#createPattern" text="Create Patterns" />
+                  <MenuItem mnemonicParsing="false" onAction="#openAndReadRLEFormat" text="Open Pattern" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
