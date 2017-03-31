@@ -80,6 +80,8 @@ public class PatternController implements Initializable {
                 runLengthEncoding.append("$");
                 amountOfB = 0;
                 amountOfO = 0;
+            } else if (textIntoRle.charAt(i) == '!') {
+                continue;
             }
 
 
