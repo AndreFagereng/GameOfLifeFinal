@@ -33,14 +33,60 @@ public class PatternController implements Initializable {
 
 
     public void savePatternButton() throws Exception{
+        String textIntoRle;
+        StringBuilder runLengthEncoding = new StringBuilder();
+        int amountOfB = 0;
+        int amountOfO = 0;
+
         fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Text files(*.txt)", "*.txt");
         fileChooser.getExtensionFilters().addAll(extensionFilter);
 
         saveFile = fileChooser.showSaveDialog(null);
 
+        textIntoRle = textAreaPattern.getText();
+        for (int i = 0; i < textAreaPattern.getText().length(); i++) {
+            if (textIntoRle.charAt(i) == 'b') {
+                amountOfB++;
+                if (textIntoRle.charAt(i+1) != 'b') {
+                    if (amountOfB == 1) {
+                        runLengthEncoding.append("b");
+                        amountOfB = 0;
+                        amountOfO = 0;
+                    }
+                    else {
+                        runLengthEncoding.append(amountOfB + "b");
+                        amountOfB = 0;
+                        amountOfO = 0;
+                    }
+                }
+            }
+            else if (textIntoRle.charAt(i) == 'o') {
+                amountOfO++;
+                if (textIntoRle.charAt(i+1) != 'o') {
+                    if (amountOfO == 1) {
+                        runLengthEncoding.append("o");
+                        amountOfB = 0;
+                        amountOfO = 0;
+                    }
+                    else {
+                        runLengthEncoding.append(amountOfO + "o");
+                        amountOfB = 0;
+                        amountOfO = 0;
+                    }
+                }
+            }
+            else if (textIntoRle.charAt(i) == '$') {
+                runLengthEncoding.append("$");
+                amountOfB = 0;
+                amountOfO = 0;
+            }
+
+
+        }
+
         if(saveFile != null){
-            saveMethod(textAreaPattern.getText(), saveFile);
+            saveMethod(runLengthEncoding.toString(), saveFile);
         }
 
 
