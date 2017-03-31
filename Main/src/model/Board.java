@@ -4,6 +4,9 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.Canvas;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  * Created by Andre on 10.02.2017.
  */
@@ -58,6 +61,9 @@ public class Board {
     }
 
     public boolean checkCellAlive(int x, int y) {
+        if (x == -1 || y == -1 || x == gridWidth || y == gridHeight) {
+            return false;
+        }
         return cellGrid[x][y].getState();
     }
 
@@ -106,7 +112,7 @@ public class Board {
         try {
             for (int xoffset = -1; xoffset < 2; xoffset++) {
                 for (int yoffset = -1; yoffset < 2; yoffset++) {
-                    if (checkCellAlive(x - xoffset,y - yoffset) && (xoffset != 0 || yoffset != 0)){
+                    if (checkCellAlive(x - xoffset,y - yoffset) && (xoffset != 0 || yoffset != 0)) {
                         count++;
                     }
                 }
@@ -118,6 +124,7 @@ public class Board {
         return count;
     }
 
+    // Next gen
     protected void checkNeighbours() {
 
         for (int x = 0; x < gridWidth; x++) {
@@ -125,12 +132,16 @@ public class Board {
 
                 int neighbour = countNeighbours(x, y);
 
+                // dies if < 2 neighbours
                 if (neighbour < 2) {
                     copyGrid[x][y].setNewState(false);
+                // dies if > 3 neighbours
                 } else if (neighbour > 3) {
                     copyGrid[x][y].setNewState(false);
+                // survives if  2 neighbours
                 } else if (neighbour == 2) {
                     copyGrid[x][y].setNewState(cellGrid[x][y].getState());
+                // lives if 3 neighbours
                 } else if (neighbour == 3) {
                     copyGrid[x][y].setNewState(true);
                 }
