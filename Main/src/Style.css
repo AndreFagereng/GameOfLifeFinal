@@ -1,0 +1,43 @@
+.root{
+	-fx-background-color: red;
+	-fx-font-family: "Arial";
+}
+
+#startPauseBtn{
+	-fx-background-color: #555;
+	-fx-text-fill: #f6f6f6;
+	-fx-font-family: "Arial";
+	-fx-font-weight: 100;
+	-fx-font-size: 25px;
+}
+
+#startPauseBtn1{
+	-fx-background-color: #888;
+	-fx-text-fill: #f6f6f6;
+	-fx-font-family: "Arial";
+	-fx-font-weight: 100;
+	-fx-font-size: 25px;
+}
+
+#clearBtn{
+	-fx-background-color: #888;
+	-fx-text-fill: #f6f6f6;
+	-fx-font-family: "Arial";
+	-fx-font-weight: 100;
+	-fx-font-size: 25px;
+}
+
+#pane{
+	-fx-background-color: lightgrey;
+	-fx-font-family: "Arial";
+	-fx-font-size:16px;
+}
+
+#colorPicker{
+	-fx-background-color: lightgrey;
+}
+
+#pattern{
+	-fx-background-color: lightgrey;
+	
+}

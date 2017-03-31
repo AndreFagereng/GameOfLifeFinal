@@ -14,7 +14,7 @@ public class GraphicsDisplayBoard {
     Cell cellGrid[][];
     Cell copyGrid[][];
     Board board;
-    Color defaultColor = Color.GREEN;
+    Color defaultColor = Color.valueOf("#ffffb3");
     Color bkGroundColor = Color.LIGHTGREY;
 
 

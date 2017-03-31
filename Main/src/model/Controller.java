@@ -16,6 +16,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -56,7 +57,7 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        colorPicker.setValue(Color.GREEN);
+        colorPicker.setValue(Color.valueOf("#ffffb3"));
         aliveCellColor = colorPicker.getValue();
         gc = canvas.getGraphicsContext2D();
         board = new Board(canvas);
@@ -67,7 +68,6 @@ public class Controller implements Initializable {
         timerMethod();
         onChangeColor();
         dragAndDrawEvent();
-
 
     }
 
@@ -183,8 +183,8 @@ public class Controller implements Initializable {
         gdb.clearBoard(gc);
 
         int nextChar;
-        int x = 10;
-        int y = 10;
+        int x = 5;
+        int y = 5;
 
         try{
 
