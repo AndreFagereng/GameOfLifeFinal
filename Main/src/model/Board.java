@@ -43,10 +43,11 @@ public class Board {
                 cellGrid[i][j] = new Cell(cellHeight, cellWidth, false);
                 copyGrid[i][j] = new Cell(cellHeight, cellWidth, false);
 
+                /*
                 if(Math.random() > 0.90){
                     cellGrid[i][j].setState(true);
-
                 }
+                */
 
             }
         }

@@ -54,6 +54,7 @@ public class Controller implements Initializable {
     File RLEFormatFile;
     FileReader fileReader;
     BufferedReader bufferedReader;
+    Pattern pattern;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,6 +63,8 @@ public class Controller implements Initializable {
         gc = canvas.getGraphicsContext2D();
         board = new Board(canvas);
         gdb = new GraphicsDisplayBoard(gc, canvas);
+        pattern = new Pattern();
+
 
         onClickCellEvent();
         showGenerationText();

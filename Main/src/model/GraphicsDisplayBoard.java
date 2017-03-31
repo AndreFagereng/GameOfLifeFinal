@@ -76,11 +76,11 @@ public class GraphicsDisplayBoard {
                     gc.fillRect(x * board.cellSize, y * board.cellSize, board.cellWidth - 1, board.cellHeight - 1);
                 }
             }
-
         }
-
-
     }
+
+
+
 
 
 }
