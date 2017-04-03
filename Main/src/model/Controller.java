@@ -23,8 +23,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionEvent;
+import java.awt.event.InvocationEvent;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -78,6 +81,7 @@ public class Controller implements Initializable {
         onChangeColor();
         dragAndDrawEvent();
 
+
     }
 
     private void showGenerationText() {
@@ -97,6 +101,7 @@ public class Controller implements Initializable {
                 if (speed > Math.abs((int) speedSlider.getValue())) {
                     gdb.updateBoard(gc);
                     gdb.drawNextGen(gc, aliveCellColor, board);
+                    
 
                     speed = 0;
                     board.generation.set(board.generation.get() + 1);
@@ -104,6 +109,7 @@ public class Controller implements Initializable {
             }
         };
     }
+
 
     public void onClear() {
         board.clearCellState();
@@ -253,8 +259,8 @@ public class Controller implements Initializable {
     }
 
 
-    public void readFromUrl() throws Exception {
-        String test = JOptionPane.showInputDialog("URL");
+    public void readFromUrl() throws Exception  {
+        String test = JOptionPane.showInputDialog("Paste URL");
 
         URL url = new URL(test);
         URLConnection conn = url.openConnection();
@@ -287,13 +293,17 @@ public class Controller implements Initializable {
                 gdb.drawNextGen(gc, colorPicker.getValue(), board);
 
 
-            }}catch(MalformedURLException me){
-                System.out.println("test");
             }
 
             bufferedReader.close();
+        } catch (MalformedURLException me) {
+            System.out.println("test");
+        } catch (NullPointerException Npe) {
+            System.out.println("No file selected");
         }
 
+
+    }
 
 
     public void exitProgram() {
