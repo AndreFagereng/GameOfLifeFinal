@@ -102,6 +102,7 @@ public class Controller implements Initializable {
     public void onClear() {
         board.clearCellState();
         gdb.clearBoard(gc);
+        startPauseBtn.setText("Start");
         timer.stop();
         clearGenerationText();
     }
@@ -111,7 +112,21 @@ public class Controller implements Initializable {
     }
 
     public void onStart() {
-        timer.start();
+
+        if (startPauseBtn.getText().toString().equals("Start")) {
+            startPauseBtn.setText("Pause");
+            timer.start();
+        }
+        else if (startPauseBtn.getText().toString().equals("Pause")) {
+            startPauseBtn.setText("Start");
+            timer.stop();
+        }
+    }
+
+    public void nextGen() {
+        gdb.updateBoard(gc);
+        gdb.drawNextGen(gc, aliveCellColor, board);
+        board.generation.set(board.generation.get() + 1);
     }
 
     private void onChangeColor() {
@@ -153,11 +168,15 @@ public class Controller implements Initializable {
             int x = (int) (e.getX() / board.cellSize);
             int y = (int) (e.getY() / board.cellSize);
 
-            if (!gdb.cellGrid[x][y].getState()) {
-                gdb.cellGrid[x][y].setState(true);
+            try {
+                if (!gdb.cellGrid[x][y].getState()) {
+                    gdb.cellGrid[x][y].setState(true);
 
-                gc.setFill(aliveCellColor);
-                gc.fillRect(x * board.cellWidth, y * board.cellHeight, board.cellHeight - 1, board.cellWidth - 1);
+                    gc.setFill(aliveCellColor);
+                    gc.fillRect(x * board.cellWidth, y * board.cellHeight, board.cellHeight - 1, board.cellWidth - 1);
+
+                }
+            } catch (ArrayIndexOutOfBoundsException ae) {
 
             }
         });
@@ -277,7 +296,9 @@ public class Controller implements Initializable {
         }
     }
 
-
+    public void exitProgram() {
+        System.exit(0);
+    }
 }
 
 
