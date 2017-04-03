@@ -24,11 +24,11 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -194,20 +194,25 @@ public class Controller implements Initializable {
             while((nextChar = bufferedReader.read()) != -1){
                 char c = (char) nextChar;
 
-                if (c == 'o') {
+                if (Character.toString(c).matches("[o]")) {
                     gdb.cellGrid[x][y].setState(true);
                     x++;
-                } else if (c == 'b') {
+                } else if (Character.toString(c).matches("[b]")) {
                     gdb.cellGrid[x][y].setState(false);
                     x++;
-                } else if (c == '$') {
+                } else if (Character.toString(c).matches("[$]")){
                     x = 5;
                     y++;
                 }
+
             }
+
+            bufferedReader.close();
 
         }catch (NullPointerException NPE){
             System.out.println("User did`nt select file");
+        }catch (ArrayIndexOutOfBoundsException Ar){
+            System.out.println("Too big");
         }
         gdb.drawNextGen(gc, colorPicker.getValue(), board);
 
@@ -223,6 +228,54 @@ public class Controller implements Initializable {
         }
     }
 
+
+    public void readFromUrl() throws Exception{
+        String test = JOptionPane.showInputDialog("URL");
+
+        URL url = new URL(test);
+        URLConnection conn = url.openConnection();
+
+        try {
+
+            bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            int nextChar;
+
+
+            while((nextChar = bufferedReader.read()) != -1){
+                char c = (char)nextChar;
+
+            }
+
+
+
+           /* int nextChar;
+            int x = 5;
+            int y = 5;
+
+            while((nextChar = bufferedReader.read()) != -1){
+                char c = (char) nextChar;
+
+                if (Character.toString(c).matches("[o]")) {
+                    gdb.cellGrid[x][y].setState(true);
+                    x++;
+                } else if (Character.toString(c).matches("[b]")) {
+                    gdb.cellGrid[x][y].setState(false);
+                    x++;
+                } else if (Character.toString(c).matches("[$]")){
+                    x = 5;
+                    y++;
+                }
+                System.out.print(c);
+*/
+
+            gdb.drawNextGen(gc, colorPicker.getValue(), board);
+            bufferedReader.close();
+
+        }catch(MalformedURLException ME){
+            System.out.println("test");
+        }
+    }
 
 
 }
