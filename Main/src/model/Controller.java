@@ -3,6 +3,7 @@ package model;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -39,6 +37,7 @@ public class Controller implements Initializable {
     @FXML Slider speedSlider, zoomSlider;
     @FXML Text showGen;
     @FXML TextArea textAreaPattern;
+    @FXML MenuItem exitProgram;
     
 
     //Controller class
@@ -223,7 +222,10 @@ public class Controller implements Initializable {
         }
     }
 
-
+    public void exitProgram() {
+        Platform.exit();
+        System.exit(0);
+    }
 
 }
 

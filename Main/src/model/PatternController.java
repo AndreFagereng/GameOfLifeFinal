@@ -35,6 +35,7 @@ public class PatternController implements Initializable {
     }
 
 
+
     public void savePatternButton() throws Exception{
         String textIntoRle;
         StringBuilder runLengthEncoding = new StringBuilder();
@@ -48,6 +49,7 @@ public class PatternController implements Initializable {
         saveFile = fileChooser.showSaveDialog(null);
 
         textIntoRle = textAreaPattern.getText();
+        textIntoRle += "!";
         for (int i = 0; i < textAreaPattern.getText().length(); i++) {
             if (textIntoRle.charAt(i) == 'b') {
                 amountOfB++;
@@ -88,7 +90,11 @@ public class PatternController implements Initializable {
             }
         }
 
-        if(saveFile != null){
+        if (runLengthEncoding.charAt(runLengthEncoding.length()) != '!') {
+            runLengthEncoding.append('!');
+        }
+
+        if (saveFile != null){
             saveMethod(runLengthEncoding.toString(), saveFile);
             Stage stage = (Stage) saveAs.getScene().getWindow();
             stage.close();
