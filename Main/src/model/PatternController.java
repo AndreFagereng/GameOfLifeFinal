@@ -90,7 +90,7 @@ public class PatternController implements Initializable {
             }
         }
 
-        if (runLengthEncoding.charAt(runLengthEncoding.length()) != '!') {
+        if (runLengthEncoding.charAt(runLengthEncoding.length()-1) != '!') {
             runLengthEncoding.append('!');
         }
 

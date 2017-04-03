@@ -166,7 +166,6 @@ public class Board {
                 cellGrid[x][y].setState(copyGrid[x][y].getNewState());
             }
         }
-
     }
 
     public void clearCellState(){

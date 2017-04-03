@@ -88,10 +88,15 @@
             <Font name="SimSun" size="16.0" />
          </font>
       </Text>
-      <Button fx:id="startPauseBtn1" layoutX="203.0" layoutY="578.0" mnemonicParsing="false" onAction="#onStop" prefHeight="50.0" prefWidth="127.0" text="Stop">
+      <!--<Button fx:id="startPauseBtn1" layoutX="203.0" layoutY="578.0" mnemonicParsing="false" onAction="#onStop" prefHeight="50.0" prefWidth="127.0" text="Stop">
          <font>
             <Font name="SimSun" size="18.0" />
          </font>
-      </Button>
+      </Button>-->
+        <Button fx:id="nextGeneration" layoutX="203.0" layoutY="578.0" mnemonicParsing="false" onAction="#nextGen" prefHeight="50.0" prefWidth="127.0" text="Step">
+            <font>
+                <Font name="SimSun" size="18.0" />
+            </font>
+        </Button>
     </children>
 </Pane>
