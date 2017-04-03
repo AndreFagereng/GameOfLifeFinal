@@ -2,8 +2,10 @@ package model;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -18,6 +20,7 @@ public class PatternController implements Initializable {
 
 
     @FXML TextArea textAreaPattern;
+    @FXML Button saveAs;
 
     FileChooser fileChooser;
     File saveFile;
@@ -83,12 +86,12 @@ public class PatternController implements Initializable {
             } else if (textIntoRle.charAt(i) == '!') {
                 continue;
             }
-
-
         }
 
         if(saveFile != null){
             saveMethod(runLengthEncoding.toString(), saveFile);
+            Stage stage = (Stage) saveAs.getScene().getWindow();
+            stage.close();
         }
 
 
@@ -99,6 +102,4 @@ public class PatternController implements Initializable {
         writer.write(content);
         writer.close();
     }
-
-
 }
