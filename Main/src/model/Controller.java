@@ -135,6 +135,8 @@ public class Controller implements Initializable {
     }
 
     public void nextGen() {
+        timer.stop();
+        startPauseBtn.setText("Start");
         gdb.updateBoard(gc);
         gdb.drawNextGen(gc, aliveCellColor, board);
         board.generation.set(board.generation.get() + 1);
