@@ -33,13 +33,19 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    @FXML Canvas canvas;
-    @FXML Button startPauseBtn, clearBtn, saveAs;
-    @FXML ColorPicker colorPicker;
-    @FXML Slider speedSlider, zoomSlider;
-    @FXML Text showGen;
-    @FXML TextArea textAreaPattern;
-    
+    @FXML
+    Canvas canvas;
+    @FXML
+    Button startPauseBtn, clearBtn, saveAs;
+    @FXML
+    ColorPicker colorPicker;
+    @FXML
+    Slider speedSlider, zoomSlider;
+    @FXML
+    Text showGen;
+    @FXML
+    TextArea textAreaPattern;
+
 
     //Controller class
 
@@ -116,8 +122,7 @@ public class Controller implements Initializable {
         if (startPauseBtn.getText().toString().equals("Start")) {
             startPauseBtn.setText("Pause");
             timer.start();
-        }
-        else if (startPauseBtn.getText().toString().equals("Pause")) {
+        } else if (startPauseBtn.getText().toString().equals("Pause")) {
             startPauseBtn.setText("Start");
             timer.stop();
         }
@@ -162,7 +167,7 @@ public class Controller implements Initializable {
         });
     }
 
-    public void dragAndDrawEvent(){
+    public void dragAndDrawEvent() {
         canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
 
             int x = (int) (e.getX() / board.cellSize);
@@ -182,7 +187,7 @@ public class Controller implements Initializable {
         });
     }
 
-    public void createPattern() throws Exception{
+    public void createPattern() throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/createOwnPattern.fxml"));
         stage = new Stage();
         stage.setScene(new Scene(root));
@@ -199,7 +204,7 @@ public class Controller implements Initializable {
     }
        */
 
-    public void readRLEPattern(File RLEFormatFile) throws Exception{
+    public void readRLEPattern(File RLEFormatFile) throws Exception {
         fileReader = new FileReader(RLEFormatFile);
         bufferedReader = new BufferedReader(fileReader);
         gdb.clearBoard(gc);
@@ -208,9 +213,9 @@ public class Controller implements Initializable {
         int x = 5;
         int y = 5;
 
-        try{
+        try {
 
-            while((nextChar = bufferedReader.read()) != -1){
+            while ((nextChar = bufferedReader.read()) != -1) {
                 char c = (char) nextChar;
 
                 if (Character.toString(c).matches("[o]")) {
@@ -219,7 +224,7 @@ public class Controller implements Initializable {
                 } else if (Character.toString(c).matches("[b]")) {
                     gdb.cellGrid[x][y].setState(false);
                     x++;
-                } else if (Character.toString(c).matches("[$]")){
+                } else if (Character.toString(c).matches("[$]")) {
                     x = 5;
                     y++;
                 }
@@ -228,9 +233,9 @@ public class Controller implements Initializable {
 
             bufferedReader.close();
 
-        }catch (NullPointerException NPE){
+        } catch (NullPointerException NPE) {
             System.out.println("User did`nt select file");
-        }catch (ArrayIndexOutOfBoundsException Ar){
+        } catch (ArrayIndexOutOfBoundsException Ar) {
             System.out.println("Too big");
         }
         gdb.drawNextGen(gc, colorPicker.getValue(), board);
@@ -238,17 +243,17 @@ public class Controller implements Initializable {
     }
 
 
-    public void openAndReadRLEFormat() throws Exception{
+    public void openAndReadRLEFormat() throws Exception {
         fileChooser = new FileChooser();
         RLEFormatFile = fileChooser.showOpenDialog(null);
 
-        if(RLEFormatFile != null){
+        if (RLEFormatFile != null) {
             readRLEPattern(RLEFormatFile);
         }
     }
 
 
-    public void readFromUrl() throws Exception{
+    public void readFromUrl() throws Exception {
         String test = JOptionPane.showInputDialog("URL");
 
         URL url = new URL(test);
@@ -258,21 +263,12 @@ public class Controller implements Initializable {
 
             bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
+
             int nextChar;
-
-
-            while((nextChar = bufferedReader.read()) != -1){
-                char c = (char)nextChar;
-
-            }
-
-
-
-           /* int nextChar;
             int x = 5;
             int y = 5;
 
-            while((nextChar = bufferedReader.read()) != -1){
+            while ((nextChar = bufferedReader.read()) != -1) {
                 char c = (char) nextChar;
 
                 if (Character.toString(c).matches("[o]")) {
@@ -281,20 +277,24 @@ public class Controller implements Initializable {
                 } else if (Character.toString(c).matches("[b]")) {
                     gdb.cellGrid[x][y].setState(false);
                     x++;
-                } else if (Character.toString(c).matches("[$]")){
+                } else if (Character.toString(c).matches("[$]")) {
                     x = 5;
                     y++;
                 }
                 System.out.print(c);
-*/
 
-            gdb.drawNextGen(gc, colorPicker.getValue(), board);
+
+                gdb.drawNextGen(gc, colorPicker.getValue(), board);
+
+
+            }}catch(MalformedURLException me){
+                System.out.println("test");
+            }
+
             bufferedReader.close();
-
-        }catch(MalformedURLException ME){
-            System.out.println("test");
         }
-    }
+
+
 
     public void exitProgram() {
         System.exit(0);
