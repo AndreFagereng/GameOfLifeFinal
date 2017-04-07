@@ -24,7 +24,7 @@
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#createPattern" text="Create Patterns" />
-                        <MenuItem mnemonicParsing="false" onAction="#openAndReadRLEFormat" text="Open Pattern" />
+                        <MenuItem mnemonicParsing="false" onAction="#onOpenRLEFile" text="Open Pattern" />
                   <MenuItem mnemonicParsing="false" onAction="#readFromUrl" text="Read URL" />
                     </items>
                 </Menu>

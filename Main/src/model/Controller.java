@@ -350,6 +350,7 @@ public class Controller implements Initializable {
                     gdb.cellGrid[x][y].setState(true);
                     x++;
                 } else if (Character.toString(type).matches("[b]")) {
+                    System.out.println(count + " " + 'b');
                     gdb.cellGrid[x][y].setState(false);
                     x++;
                 } else if (Character.toString(type).matches("[$]")){
