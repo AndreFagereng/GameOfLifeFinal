@@ -1,8 +1,6 @@
 package model;
 
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
-import javafx.animation.FadeTransition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,22 +14,16 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import java.awt.event.ActionEvent;
-import java.awt.event.InvocationEvent;
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -64,6 +56,7 @@ public class Controller implements Initializable {
     FileReader fileReader;
     BufferedReader bufferedReader;
     Pattern pattern;
+    StringBuilder stringBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -211,6 +204,32 @@ public class Controller implements Initializable {
         stage.close();
     }
        */
+/*
+    StringBuilder stringBuilder;
+
+    public StringBuilder readFileAndReturnString(BufferedReader bufferedReader){
+
+        try {
+
+            stringBuilder = new StringBuilder();
+
+            int nextChar;
+
+            while((nextChar = bufferedReader.read()) != -1 && nextChar != '$'){
+                stringBuilder.append((char)nextChar);
+            }
+
+        }catch (FileNotFoundException f){
+            System.out.println("File not found");
+        }catch (IOException io){
+            System.out.println("Ok");
+        }
+
+        return stringBuilder;
+    }
+
+
+
 
     public void readRLEPattern(File RLEFormatFile) throws Exception {
         fileReader = new FileReader(RLEFormatFile);
@@ -260,7 +279,7 @@ public class Controller implements Initializable {
         }
     }
 
-
+*/
     public void readFromUrl() throws Exception  {
         String test = JOptionPane.showInputDialog("Paste URL");
 
@@ -270,7 +289,6 @@ public class Controller implements Initializable {
         try {
 
             bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
 
             int nextChar;
             int x = 5;
@@ -306,6 +324,104 @@ public class Controller implements Initializable {
 
 
     }
+
+    public void onOpenRLEFile()throws Exception{
+        fileChooser = new FileChooser();
+        RLEFormatFile = fileChooser.showOpenDialog(null);
+        fileReader = new FileReader(RLEFormatFile);
+        readsStringBuilderAndDraw();
+    }
+
+    public void readsStringBuilderAndDraw() throws Exception{
+
+        StringBuilder stringBuilder = returnFileToStringBuilder(bufferedReader);
+        int x = 0;
+        int y = 0;
+
+        while(stringBuilder.length() > 0){
+            int count = returnAmountOfCellsInt(stringBuilder);
+            char type = stringBuilder.charAt(0);
+            stringBuilder.deleteCharAt(0);
+
+            for(int i = 0; i < count; i++) {
+
+                if (Character.toString(type).matches("[o]")) {
+                    System.out.println(count + " " + 'o');
+                    gdb.cellGrid[x][y].setState(true);
+                    x++;
+                } else if (Character.toString(type).matches("[b]")) {
+                    gdb.cellGrid[x][y].setState(false);
+                    x++;
+                } else if (Character.toString(type).matches("[$]")){
+                    System.out.println("Mellomrom");
+                    x=0;
+                    y++;
+                }
+            }
+
+        }
+        gdb.drawNextGen(gc, colorPicker.getValue(), board);
+
+    }
+
+
+    public StringBuilder returnFileToStringBuilder(BufferedReader bufferedReader){
+        try {
+            this.bufferedReader = bufferedReader;
+            bufferedReader = new BufferedReader(fileReader);
+            stringBuilder = new StringBuilder();
+
+            int nextChar;
+
+            while((nextChar = bufferedReader.read()) != -1){
+                stringBuilder.append((char)nextChar);
+
+            }
+
+
+        }catch (FileNotFoundException f){
+            System.out.println("File not found");
+        }catch (IOException io){
+            System.out.println("Ok");
+        }
+
+        return stringBuilder;
+    }
+
+    public int returnAmountOfCellsInt(StringBuilder stringBuilder){
+
+        int numberLenght = 0;
+        String amountOfCells = "";
+        int amountOfCellsInteger;
+
+        if (!Character.isDigit(stringBuilder.charAt(0))) {
+            return 1;
+        }
+
+
+        for (int i = 0; i < stringBuilder.length(); i++) {
+
+            char character = stringBuilder.charAt(i);
+
+            if (!Character.toString(character).matches("[0-9]")) {
+
+                numberLenght = i ;
+                break;
+
+            }
+        }
+
+        amountOfCells = stringBuilder.substring(0, numberLenght);
+        amountOfCellsInteger = Integer.parseInt(amountOfCells);
+
+        stringBuilder.delete(0, numberLenght);
+
+        return amountOfCellsInteger;
+
+    }
+
+
+
 
 
     public void exitProgram() {
