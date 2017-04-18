@@ -1,11 +1,11 @@
 package model;
 
-import javafx.event.Event;
-import javafx.scene.input.MouseEvent;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,12 +15,8 @@ import java.util.regex.Pattern;
 public class FileHandler {
 
 
+    public String readReturnString(BufferedReader bufferedReader) throws Exception{
 
-
-    public String readFile(File RLEFile) throws Exception{
-
-        FileReader fileReader = new FileReader(RLEFile);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
         StringBuilder stringBuilder = new StringBuilder();
 
         if(bufferedReader.readLine() == null){
@@ -38,7 +34,6 @@ public class FileHandler {
         }
 
         bufferedReader.close();
-        System.out.println(text);
 
         Pattern pattern = Pattern.compile("\\d+|[ob]|\\$");
         Matcher matcher = pattern.matcher(text);
@@ -56,6 +51,21 @@ public class FileHandler {
         }
 
         return stringBuilder.toString();
+
+    }
+
+    public String readURLFile(BufferedReader bufferedReader)throws Exception{
+
+        return readReturnString(bufferedReader);
+    }
+
+    public String readOpenFile(File RLEFile) throws Exception{
+
+        FileReader fileReader = new FileReader(RLEFile);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        StringBuilder stringBuilder = new StringBuilder();
+
+        return readReturnString(bufferedReader);
 
     }
 

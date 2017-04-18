@@ -209,72 +209,49 @@ public class Controller implements Initializable {
     }
 
     public void readFromUrl() throws Exception  {
-        String test = JOptionPane.showInputDialog("Paste URL");
 
+        FileHandler fileHandler = new FileHandler();
+        String test = JOptionPane.showInputDialog("Paste URL");
         URL url = new URL(test);
         URLConnection conn = url.openConnection();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
-        try {
-
-            bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-            int nextChar;
-            int x = 5;
-            int y = 5;
-
-            while ((nextChar = bufferedReader.read()) != -1) {
-                char c = (char) nextChar;
-
-                if (Character.toString(c).matches("[o]")) {
-                    gdb.cellGrid[x][y].setState(true);
-                    x++;
-                } else if (Character.toString(c).matches("[b]")) {
-                    gdb.cellGrid[x][y].setState(false);
-                    x++;
-                } else if (Character.toString(c).matches("[$]")) {
-                    x = 5;
-                    y++;
-                }
-                System.out.print(c);
-
-
-                gdb.drawNextGen(gc, colorPicker.getValue(), board);
-
-
+            String text = "";
+            try {
+                text = fileHandler.readURLFile(bufferedReader);
+            }catch (NullPointerException nullPoint){
+                System.out.println("Catch doesnt work");
+            }catch (MalformedURLException malformed){
+                System.out.println("Catch doesnt work");
             }
-
-            bufferedReader.close();
-        } catch (MalformedURLException me) {
-            System.out.println("test");
-        } catch (NullPointerException Npe) {
-            System.out.println("No file selected");
-        }
-
+            gdb.clearBoard(gc);
+            fileHandler.readStringToBoard(text, gdb);
+            gdb.drawNextGen(gc, colorPicker.getValue(), board);
 
     }
 
 
     public void onOpenRLEFile() throws Exception{
         try {
-            fileChooser = new FileChooser();
             FileHandler fileHandler = new FileHandler();
+            fileChooser = new FileChooser();
             RLEFormatFile = fileChooser.showOpenDialog(null);
 
             if (RLEFormatFile != null) {
-                fileHandler.readFile(RLEFormatFile);
+                fileHandler.readOpenFile(RLEFormatFile);
                 gdb.clearBoard(gc);
             } else {
-                System.out.println("feil i kode");
+                System.out.println("Something wrong with file");
             }
 
             try {
-                fileHandler.readStringToBoard(fileHandler.readFile(RLEFormatFile), gdb);
+                fileHandler.readStringToBoard(fileHandler.readOpenFile(RLEFormatFile), gdb);
                 gdb.drawNextGen(gc, colorPicker.getValue(), board);
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("mongolid");
+                System.out.println("ArrayOutOfBound");
             }
-        }catch (NullPointerException np){
-            System.out.println("no file");
+            }catch (NullPointerException np){
+            System.out.println("No file selected");
         }
     }
 
