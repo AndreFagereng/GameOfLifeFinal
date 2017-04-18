@@ -2,6 +2,8 @@ package model;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.binding.Bindings;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,10 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -25,6 +24,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
+
+import static model.Patterns.*;
+import static model.GraphicsDisplayBoard.chosenPattern;
 
 public class Controller implements Initializable {
 
@@ -40,6 +43,8 @@ public class Controller implements Initializable {
     Text showGen;
     @FXML
     TextArea textAreaPattern;
+    @FXML
+    ChoiceBox<PatternType> choicePattern;
 
 
     //Controller class
@@ -55,26 +60,34 @@ public class Controller implements Initializable {
     File RLEFormatFile;
     FileReader fileReader;
     BufferedReader bufferedReader;
-    Pattern pattern;
     StringBuilder stringBuilder;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        onPatternDraw();
+
         colorPicker.setValue(Color.valueOf("#ffffb3"));
         aliveCellColor = colorPicker.getValue();
         gc = canvas.getGraphicsContext2D();
         board = new Board(canvas);
         gdb = new GraphicsDisplayBoard(gc, canvas);
-        pattern = new Pattern();
 
 
-        onClickCellEvent();
+
+
         showGenerationText();
         timerMethod();
         onChangeColor();
-        dragAndDrawEvent();
 
 
+
+    }
+
+    private void onPatternDraw() {
+        choicePattern.getItems().addAll(PatternType.values());
+        choicePattern.valueProperty().addListener(e ->choiceMade());
+        choicePattern.getSelectionModel().selectLast();
     }
 
     private void showGenerationText() {
@@ -142,12 +155,11 @@ public class Controller implements Initializable {
         });
     }
 
-    private void onClickCellEvent() {
-        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-
-
-            int x = (int) (e.getX() / board.cellSize);
-            int y = (int) (e.getY() / board.cellSize);
+    private EventHandler onClickCellEvent = new EventHandler() {
+        @Override
+        public void handle(Event event) {
+            int x = getXPos(event);
+            int y = getYPos(event);
 
             if (x == -1 || y == -1 || x == board.gridWidth || y == board.gridHeight) {
                 throw new ArrayIndexOutOfBoundsException();
@@ -165,15 +177,15 @@ public class Controller implements Initializable {
 
 
             }
-        });
-    }
+        }
+    };
 
-    public void dragAndDrawEvent() {
-        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
 
-            int x = (int) (e.getX() / board.cellSize);
-            int y = (int) (e.getY() / board.cellSize);
-
+    public EventHandler dragAndDrawEvent = new EventHandler() {
+        @Override
+        public void handle(Event event) {
+            int x = getXPos(event);
+            int y = getYPos(event);
             try {
                 if (!gdb.cellGrid[x][y].getState()) {
                     gdb.cellGrid[x][y].setState(true);
@@ -185,8 +197,13 @@ public class Controller implements Initializable {
             } catch (ArrayIndexOutOfBoundsException ae) {
 
             }
-        });
-    }
+        }
+    };
+
+
+
+
+
 
     public void createPattern() throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/createOwnPattern.fxml"));
@@ -324,19 +341,121 @@ public class Controller implements Initializable {
 
 
     }
+    public void openFileRLENew() throws Exception{
+        fileChooser = new FileChooser();
+        FileHandler fileHandler = new FileHandler();
+        RLEFormatFile = fileChooser.showOpenDialog(null);
+
+        if(RLEFormatFile != null){
+            fileHandler.readRLEFile(RLEFormatFile);
+            gdb.clearBoard(gc);
+        }else{
+            System.out.println("feil i kode");
+        }
+
+        try{
+            fileHandler.readStringToBoard(fileHandler.readRLEFile(RLEFormatFile), gdb);
+            gdb.drawNextGen(gc, colorPicker.getValue(), board);
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("mongolid");
+        }
+    }
+
+
+
+    public enum PatternType{
+        Glider("Glider", glider),
+        Exploder("Exploder", exploder),
+        Draw("Draw your own", new int[][]{});
+
+        private int[][] pattern;
+        private String displayName;
+
+        PatternType(String d, int[][] p){
+            pattern = p;
+            displayName = d;
+        }
+
+        
+
+        @Override
+        public String toString(){return displayName;}
+    }
+
+    public void choiceMade(){
+        PatternType choice = choicePattern.getValue();
+        chosenPattern = choice.pattern;
+
+        if(choice== PatternType.Draw){
+            canvas.setOnMouseClicked(onClickCellEvent);
+            canvas.setOnMouseDragged(dragAndDrawEvent);
+        }else {
+            canvas.setOnMouseClicked(initPatternEvent);
+            canvas.setOnMouseDragged(null);
+
+        }
+    }
+
+    EventHandler initPatternEvent = new EventHandler(){
+        @Override
+        public void handle(Event event) {
+
+            int[][] pattern = chosenPattern;
+            int offsetX = getXPos(event);
+            int offsetY = getYPos(event);
+
+            try{
+            for (int x = 0; x < pattern.length; x++) {
+                for (int y = 0; y < pattern.length; y++)
+                    if (pattern[x][y] == 1) {
+                        gdb.cellGrid[x + offsetX][y + offsetY].setState(true);
+                        System.out.println("1");
+                    } else {
+                        gdb.cellGrid[x + offsetX][y + offsetY].setState(false);
+                        System.out.println("0");
+                    }
+                    gdb.drawNextGen(gc, colorPicker.getValue(), board);
+            }
+        }catch(ArrayIndexOutOfBoundsException e){
+                System.out.println("søn");
+            }
+        }
+    };
+
+    private int getYPos(Event event) {
+        MouseEvent e = (MouseEvent) event;
+        return (int) (e.getY() / board.cellSize);
+    }
+
+    private int getXPos(Event event) {
+        MouseEvent e = (MouseEvent) event;
+        return (int) (e.getX() / board.cellSize);
+    }
+
+
+    /*
 
     public void onOpenRLEFile()throws Exception{
         fileChooser = new FileChooser();
         RLEFormatFile = fileChooser.showOpenDialog(null);
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("RLE Files", "*.rle");
+
         fileReader = new FileReader(RLEFormatFile);
+        fileChooser.getExtensionFilters().addAll(filter);
+
+        gdb.clearBoard(gc);
+
         readsStringBuilderAndDraw();
     }
 
     public void readsStringBuilderAndDraw() throws Exception{
 
+        gdb.clearBoard(gc);
         StringBuilder stringBuilder = returnFileToStringBuilder(bufferedReader);
         int x = 0;
         int y = 0;
+
+
 
         while(stringBuilder.length() > 0){
             int count = returnAmountOfCellsInt(stringBuilder);
@@ -344,6 +463,7 @@ public class Controller implements Initializable {
             stringBuilder.deleteCharAt(0);
 
             for(int i = 0; i < count; i++) {
+
 
                 if (Character.toString(type).matches("[o]")) {
                     System.out.println(count + " " + 'o');
@@ -360,7 +480,9 @@ public class Controller implements Initializable {
                 }
             }
 
+
         }
+        System.out.println(stringBuilder);
         gdb.drawNextGen(gc, colorPicker.getValue(), board);
 
     }
@@ -371,13 +493,17 @@ public class Controller implements Initializable {
             this.bufferedReader = bufferedReader;
             bufferedReader = new BufferedReader(fileReader);
             stringBuilder = new StringBuilder();
+            String text = "";
 
             int nextChar;
 
+
             while((nextChar = bufferedReader.read()) != -1){
+
                 stringBuilder.append((char)nextChar);
 
             }
+
 
 
         }catch (FileNotFoundException f){
@@ -408,7 +534,6 @@ public class Controller implements Initializable {
 
                 numberLenght = i ;
                 break;
-
             }
         }
 
@@ -424,7 +549,7 @@ public class Controller implements Initializable {
 
 
 
-
+*/
     public void exitProgram() {
         System.exit(0);
     }
