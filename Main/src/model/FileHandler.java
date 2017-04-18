@@ -1,5 +1,8 @@
 package model;
 
+import javafx.event.Event;
+import javafx.scene.input.MouseEvent;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,17 +14,21 @@ import java.util.regex.Pattern;
  */
 public class FileHandler {
 
-    public String readRLEFile(File RLEFile) throws Exception{
+
+
+
+    public String readFile(File RLEFile) throws Exception{
 
         FileReader fileReader = new FileReader(RLEFile);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         StringBuilder stringBuilder = new StringBuilder();
-        String text = "";
-        String line = "";
 
         if(bufferedReader.readLine() == null){
             System.out.println("No file");
         }
+
+        String text = "";
+        String line = "";
 
         while((line = bufferedReader.readLine())!= null){
 
@@ -30,6 +37,9 @@ public class FileHandler {
             }
         }
 
+        bufferedReader.close();
+        System.out.println(text);
+
         Pattern pattern = Pattern.compile("\\d+|[ob]|\\$");
         Matcher matcher = pattern.matcher(text);
 
@@ -37,7 +47,6 @@ public class FileHandler {
             int number = 1;
             if(matcher.group().matches("\\d+")){
                 number = Integer.parseInt(matcher.group());
-                System.out.println(number);
                 matcher.find();
             }
 
@@ -50,10 +59,9 @@ public class FileHandler {
 
     }
 
-    int x = 5;
-    int y = 5;
+    int x = 0;
+    int y = 0;
 
-    Board board;
 
 
     public void readStringToBoard(String RLEText, GraphicsDisplayBoard gdb){
@@ -68,7 +76,7 @@ public class FileHandler {
                 x++;
             }
             if(RLEText.charAt(i) == '$'){
-                x = 5;
+                x = 0;
                 y++;
             }
         }

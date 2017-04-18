@@ -24,10 +24,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 import static model.Patterns.*;
-import static model.GraphicsDisplayBoard.chosenPattern;
+import static model.GraphicsDisplayBoard.newPattern;
 
 public class Controller implements Initializable {
 
@@ -58,9 +57,8 @@ public class Controller implements Initializable {
     Stage stage;
     FileChooser fileChooser;
     File RLEFormatFile;
-    FileReader fileReader;
     BufferedReader bufferedReader;
-    StringBuilder stringBuilder;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -86,7 +84,7 @@ public class Controller implements Initializable {
 
     private void onPatternDraw() {
         choicePattern.getItems().addAll(PatternType.values());
-        choicePattern.valueProperty().addListener(e ->choiceMade());
+        choicePattern.valueProperty().addListener(e -> getSelectedDrawMethod());
         choicePattern.getSelectionModel().selectLast();
     }
 
@@ -158,8 +156,8 @@ public class Controller implements Initializable {
     private EventHandler onClickCellEvent = new EventHandler() {
         @Override
         public void handle(Event event) {
-            int x = getXPos(event);
-            int y = getYPos(event);
+            int x = getXPosition(event);
+            int y = getYPosition(event);
 
             if (x == -1 || y == -1 || x == board.gridWidth || y == board.gridHeight) {
                 throw new ArrayIndexOutOfBoundsException();
@@ -181,11 +179,11 @@ public class Controller implements Initializable {
     };
 
 
-    public EventHandler dragAndDrawEvent = new EventHandler() {
+    public EventHandler onDragCellEvent = new EventHandler() {
         @Override
         public void handle(Event event) {
-            int x = getXPos(event);
-            int y = getYPos(event);
+            int x = getXPosition(event);
+            int y = getYPosition(event);
             try {
                 if (!gdb.cellGrid[x][y].getState()) {
                     gdb.cellGrid[x][y].setState(true);
@@ -201,10 +199,6 @@ public class Controller implements Initializable {
     };
 
 
-
-
-
-
     public void createPattern() throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View/createOwnPattern.fxml"));
         stage = new Stage();
@@ -213,90 +207,7 @@ public class Controller implements Initializable {
         stage.setTitle("Patterns");
         stage.show();
     }
-    /*
-    public void closeButtonAction(){
-        // get a handle to the stage
-        Stage stage = (Stage) saveAs.getScene().getWindow();
-        // do what you have to do
-        stage.close();
-    }
-       */
-/*
-    StringBuilder stringBuilder;
 
-    public StringBuilder readFileAndReturnString(BufferedReader bufferedReader){
-
-        try {
-
-            stringBuilder = new StringBuilder();
-
-            int nextChar;
-
-            while((nextChar = bufferedReader.read()) != -1 && nextChar != '$'){
-                stringBuilder.append((char)nextChar);
-            }
-
-        }catch (FileNotFoundException f){
-            System.out.println("File not found");
-        }catch (IOException io){
-            System.out.println("Ok");
-        }
-
-        return stringBuilder;
-    }
-
-
-
-
-    public void readRLEPattern(File RLEFormatFile) throws Exception {
-        fileReader = new FileReader(RLEFormatFile);
-        bufferedReader = new BufferedReader(fileReader);
-        gdb.clearBoard(gc);
-
-        int nextChar;
-        int x = 5;
-        int y = 5;
-
-        try {
-
-            while ((nextChar = bufferedReader.read()) != -1) {
-                char c = (char) nextChar;
-
-                if (Character.toString(c).matches("[o]")) {
-                    gdb.cellGrid[x][y].setState(true);
-                    x++;
-                } else if (Character.toString(c).matches("[b]")) {
-                    gdb.cellGrid[x][y].setState(false);
-                    x++;
-                } else if (Character.toString(c).matches("[$]")) {
-                    x = 5;
-                    y++;
-                }
-
-            }
-
-            bufferedReader.close();
-
-        } catch (NullPointerException NPE) {
-            System.out.println("User did`nt select file");
-        } catch (ArrayIndexOutOfBoundsException Ar) {
-            System.out.println("Too big");
-        }
-        gdb.drawNextGen(gc, colorPicker.getValue(), board);
-
-    }
-
-
-    public void openAndReadRLEFormat() throws Exception {
-        fileChooser = new FileChooser();
-        RLEFormatFile = fileChooser.showOpenDialog(null);
-
-        if (RLEFormatFile != null) {
-            readRLEPattern(RLEFormatFile);
-        }
-    }
-
-*/
     public void readFromUrl() throws Exception  {
         String test = JOptionPane.showInputDialog("Paste URL");
 
@@ -341,23 +252,29 @@ public class Controller implements Initializable {
 
 
     }
-    public void openFileRLENew() throws Exception{
-        fileChooser = new FileChooser();
-        FileHandler fileHandler = new FileHandler();
-        RLEFormatFile = fileChooser.showOpenDialog(null);
 
-        if(RLEFormatFile != null){
-            fileHandler.readRLEFile(RLEFormatFile);
-            gdb.clearBoard(gc);
-        }else{
-            System.out.println("feil i kode");
-        }
 
-        try{
-            fileHandler.readStringToBoard(fileHandler.readRLEFile(RLEFormatFile), gdb);
-            gdb.drawNextGen(gc, colorPicker.getValue(), board);
-        }catch(ArrayIndexOutOfBoundsException e){
-            System.out.println("mongolid");
+    public void onOpenRLEFile() throws Exception{
+        try {
+            fileChooser = new FileChooser();
+            FileHandler fileHandler = new FileHandler();
+            RLEFormatFile = fileChooser.showOpenDialog(null);
+
+            if (RLEFormatFile != null) {
+                fileHandler.readFile(RLEFormatFile);
+                gdb.clearBoard(gc);
+            } else {
+                System.out.println("feil i kode");
+            }
+
+            try {
+                fileHandler.readStringToBoard(fileHandler.readFile(RLEFormatFile), gdb);
+                gdb.drawNextGen(gc, colorPicker.getValue(), board);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("mongolid");
+            }
+        }catch (NullPointerException np){
+            System.out.println("no file");
         }
     }
 
@@ -376,33 +293,33 @@ public class Controller implements Initializable {
             displayName = d;
         }
 
-        
+
 
         @Override
         public String toString(){return displayName;}
     }
 
-    public void choiceMade(){
-        PatternType choice = choicePattern.getValue();
-        chosenPattern = choice.pattern;
+    public void getSelectedDrawMethod(){
+        PatternType selectedPattern = choicePattern.getValue();
+        newPattern = selectedPattern.pattern;
 
-        if(choice== PatternType.Draw){
+        if(selectedPattern == PatternType.Draw){
             canvas.setOnMouseClicked(onClickCellEvent);
-            canvas.setOnMouseDragged(dragAndDrawEvent);
+            canvas.setOnMouseDragged(onDragCellEvent);
         }else {
-            canvas.setOnMouseClicked(initPatternEvent);
+            canvas.setOnMouseClicked(onDrawSelectedPattern);
             canvas.setOnMouseDragged(null);
 
         }
     }
 
-    EventHandler initPatternEvent = new EventHandler(){
+    EventHandler onDrawSelectedPattern = new EventHandler(){
         @Override
         public void handle(Event event) {
 
-            int[][] pattern = chosenPattern;
-            int offsetX = getXPos(event);
-            int offsetY = getYPos(event);
+            int[][] pattern = newPattern;
+            int offsetX = getXPosition(event);
+            int offsetY = getYPosition(event);
 
             try{
             for (int x = 0; x < pattern.length; x++) {
@@ -417,17 +334,17 @@ public class Controller implements Initializable {
                     gdb.drawNextGen(gc, colorPicker.getValue(), board);
             }
         }catch(ArrayIndexOutOfBoundsException e){
-                System.out.println("søn");
+                System.out.println("ArrayOutOfBound exception catched");
             }
         }
     };
 
-    private int getYPos(Event event) {
+    private int getYPosition(Event event) {
         MouseEvent e = (MouseEvent) event;
         return (int) (e.getY() / board.cellSize);
     }
 
-    private int getXPos(Event event) {
+    private int getXPosition(Event event) {
         MouseEvent e = (MouseEvent) event;
         return (int) (e.getX() / board.cellSize);
     }
@@ -546,10 +463,94 @@ public class Controller implements Initializable {
 
     }
 
+  /*
+    public void closeButtonAction(){
+        // get a handle to the stage
+        Stage stage = (Stage) saveAs.getScene().getWindow();
+        // do what you have to do
+        stage.close();
+    }
+       */
+/*
+    StringBuilder stringBuilder;
+
+    public StringBuilder readFileAndReturnString(BufferedReader bufferedReader){
+
+        try {
+
+            stringBuilder = new StringBuilder();
+
+            int nextChar;
+
+            while((nextChar = bufferedReader.read()) != -1 && nextChar != '$'){
+                stringBuilder.append((char)nextChar);
+            }
+
+        }catch (FileNotFoundException f){
+            System.out.println("File not found");
+        }catch (IOException io){
+            System.out.println("Ok");
+        }
+
+        return stringBuilder;
+    }
 
 
+
+
+    public void readRLEPattern(File RLEFormatFile) throws Exception {
+        fileReader = new FileReader(RLEFormatFile);
+        bufferedReader = new BufferedReader(fileReader);
+        gdb.clearBoard(gc);
+
+        int nextChar;
+        int x = 5;
+        int y = 5;
+
+        try {
+
+            while ((nextChar = bufferedReader.read()) != -1) {
+                char c = (char) nextChar;
+
+                if (Character.toString(c).matches("[o]")) {
+                    gdb.cellGrid[x][y].setState(true);
+                    x++;
+                } else if (Character.toString(c).matches("[b]")) {
+                    gdb.cellGrid[x][y].setState(false);
+                    x++;
+                } else if (Character.toString(c).matches("[$]")) {
+                    x = 5;
+                    y++;
+                }
+
+            }
+
+            bufferedReader.close();
+
+        } catch (NullPointerException NPE) {
+            System.out.println("User did`nt select file");
+        } catch (ArrayIndexOutOfBoundsException Ar) {
+            System.out.println("Too big");
+        }
+        gdb.drawNextGen(gc, colorPicker.getValue(), board);
+
+    }
+
+
+    public void openAndReadRLEFormat() throws Exception {
+        fileChooser = new FileChooser();
+        RLEFormatFile = fileChooser.showOpenDialog(null);
+
+        if (RLEFormatFile != null) {
+            readRLEPattern(RLEFormatFile);
+        }
+    }
 
 */
+
+
+
+
     public void exitProgram() {
         System.exit(0);
     }

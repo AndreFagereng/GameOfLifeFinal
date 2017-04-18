@@ -16,7 +16,7 @@ public class GraphicsDisplayBoard {
     Board board;
     Color defaultColor = Color.valueOf("#ffffb3");
     Color bkGroundColor = Color.LIGHTGREY;
-    public static int[][] chosenPattern;
+    public static int[][] newPattern;
 
 
     public GraphicsDisplayBoard(GraphicsContext gc, Canvas canvas) {

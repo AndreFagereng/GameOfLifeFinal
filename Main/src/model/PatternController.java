@@ -31,7 +31,11 @@ public class PatternController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        textAreaPattern.setText("#N Change Name here\n" +
+                "#C \n" +
+                "#C Write RLE format below\n"
 
+        );
     }
 
 
@@ -42,8 +46,9 @@ public class PatternController implements Initializable {
         int amountOfB = 0;
         int amountOfO = 0;
 
+
         fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Text files(*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("RLE Files(*.rle)", "*.rle");
         fileChooser.getExtensionFilters().addAll(extensionFilter);
 
         saveFile = fileChooser.showSaveDialog(null);
