@@ -208,7 +208,7 @@ public class Controller implements Initializable {
         stage.show();
     }
 
-    public void readFromUrl() throws Exception  {
+    public void onReadURLFile() throws Exception  {
 
         FileHandler fileHandler = new FileHandler();
         String test = JOptionPane.showInputDialog("Paste URL");
@@ -257,7 +257,7 @@ public class Controller implements Initializable {
 
 
 
-    public enum PatternType{
+    private enum PatternType{
         Glider("Glider", glider),
         Exploder("Exploder", exploder),
         Draw("Draw your own", new int[][]{});
@@ -276,7 +276,7 @@ public class Controller implements Initializable {
         public String toString(){return displayName;}
     }
 
-    public void getSelectedDrawMethod(){
+    private void getSelectedDrawMethod(){
         PatternType selectedPattern = choicePattern.getValue();
         newPattern = selectedPattern.pattern;
 
@@ -290,7 +290,7 @@ public class Controller implements Initializable {
         }
     }
 
-    EventHandler onDrawSelectedPattern = new EventHandler(){
+    private EventHandler onDrawSelectedPattern = new EventHandler(){
         @Override
         public void handle(Event event) {
 

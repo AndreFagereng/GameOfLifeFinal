@@ -3,9 +3,6 @@ package model;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,8 +11,25 @@ import java.util.regex.Pattern;
  */
 public class FileHandler {
 
+    private int x = 0;
+    private int y = 0;
 
-    public String readReturnString(BufferedReader bufferedReader) throws Exception{
+    public String readURLFile(BufferedReader bufferedReader)throws Exception{
+
+        return readFileReturnString(bufferedReader);
+    }
+
+    public String readOpenFile(File RLEFile) throws Exception{
+
+        FileReader fileReader = new FileReader(RLEFile);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+        return readFileReturnString(bufferedReader);
+
+    }
+
+
+    public String readFileReturnString(BufferedReader bufferedReader) throws Exception{
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -54,24 +68,6 @@ public class FileHandler {
 
     }
 
-    public String readURLFile(BufferedReader bufferedReader)throws Exception{
-
-        return readReturnString(bufferedReader);
-    }
-
-    public String readOpenFile(File RLEFile) throws Exception{
-
-        FileReader fileReader = new FileReader(RLEFile);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        StringBuilder stringBuilder = new StringBuilder();
-
-        return readReturnString(bufferedReader);
-
-    }
-
-    int x = 0;
-    int y = 0;
-
 
 
     public void readStringToBoard(String RLEText, GraphicsDisplayBoard gdb){
@@ -91,6 +87,7 @@ public class FileHandler {
             }
         }
     }
+
 
 
 }
