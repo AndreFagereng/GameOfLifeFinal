@@ -84,7 +84,7 @@ public class Controller implements Initializable {
 
     private void onPatternDraw() {
         choicePattern.getItems().addAll(PatternType.values());
-        choicePattern.valueProperty().addListener(e -> getSelectedDrawMethod());
+        choicePattern.valueProperty().addListener(e -> getSelectedPattern());
         choicePattern.getSelectionModel().selectLast();
     }
 
@@ -232,10 +232,12 @@ public class Controller implements Initializable {
 
 
     public void onOpenRLEFile() throws Exception{
+        onStart();
         try {
             FileHandler fileHandler = new FileHandler();
             fileChooser = new FileChooser();
             RLEFormatFile = fileChooser.showOpenDialog(null);
+
 
             if (RLEFormatFile != null) {
                 fileHandler.readOpenFile(RLEFormatFile);
@@ -260,6 +262,7 @@ public class Controller implements Initializable {
     private enum PatternType{
         Glider("Glider", glider),
         Exploder("Exploder", exploder),
+        Painting("Painting", painting),
         Draw("Draw your own", new int[][]{});
 
         private int[][] pattern;
@@ -276,7 +279,7 @@ public class Controller implements Initializable {
         public String toString(){return displayName;}
     }
 
-    private void getSelectedDrawMethod(){
+    private void getSelectedPattern(){
         PatternType selectedPattern = choicePattern.getValue();
         newPattern = selectedPattern.pattern;
 
@@ -300,11 +303,11 @@ public class Controller implements Initializable {
 
             try{
             for (int x = 0; x < pattern.length; x++) {
-                for (int y = 0; y < pattern.length; y++)
+                for (int y = 0; y < pattern[x].length; y++)
                     if (pattern[x][y] == 1) {
                         gdb.cellGrid[x + offsetX][y + offsetY].setState(true);
                         System.out.println("1");
-                    } else {
+                    } else if(pattern[x][y] == 0) {
                         gdb.cellGrid[x + offsetX][y + offsetY].setState(false);
                         System.out.println("0");
                     }
