@@ -211,18 +211,18 @@ public class Controller implements Initializable {
     public void onReadURLFile() throws Exception  {
 
         FileHandler fileHandler = new FileHandler();
+
         String test = JOptionPane.showInputDialog("Paste URL");
-        URL url = new URL(test);
-        URLConnection conn = url.openConnection();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            URL url = new URL(test);
+            URLConnection conn = url.openConnection();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
 
             String text = "";
             try {
                 text = fileHandler.readURLFile(bufferedReader);
             }catch (NullPointerException nullPoint){
-                System.out.println("Catch doesnt work");
-            }catch (MalformedURLException malformed){
-                System.out.println("Catch doesnt work");
+                System.out.println("Catch works");
             }
             gdb.clearBoard(gc);
             fileHandler.readStringToBoard(text, gdb);
@@ -232,7 +232,7 @@ public class Controller implements Initializable {
 
 
     public void onOpenRLEFile() throws Exception{
-        onStart();
+
         try {
             FileHandler fileHandler = new FileHandler();
             fileChooser = new FileChooser();
@@ -254,6 +254,7 @@ public class Controller implements Initializable {
             }
             }catch (NullPointerException np){
             System.out.println("No file selected");
+
         }
     }
 
