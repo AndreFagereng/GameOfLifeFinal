@@ -12,9 +12,8 @@ import java.util.ArrayList;
  */
 public class Board {
 
-
-    protected Cell copyGrid[][];
     protected Cell cellGrid[][];
+    protected Cell copyGrid[][];
     protected int cellHeight;
     protected int cellWidth;
     protected int cellSize = cellHeight = cellWidth = 10;
@@ -59,6 +58,14 @@ public class Board {
 
     public Cell[][] getCopyGrid(){
         return copyGrid;
+    }
+
+    public void setCellGrid(Cell[][] cellGrid) {
+        this.cellGrid = cellGrid;
+    }
+
+    public void setCopyGrid(Cell[][] copyGrid) {
+        this.copyGrid = copyGrid;
     }
 
     public boolean checkCellAlive(int x, int y) {

@@ -66,17 +66,66 @@ public class BoardTest {
     @Test
     public void getCellGrid() throws Exception {
         board = new Board();
-        assertNull(board.getCellGrid());
+        Cell cellGrid[][] = new Cell[gridWidth][gridHeight];
+
+        board.setCellGrid(cellGrid);
+        assertEquals(cellGrid, board.getCellGrid());
     }
 
     @Test
     public void getCopyGrid() throws Exception {
+        board = new Board();
+        Cell copyGrid[][] = new Cell[gridWidth][gridHeight];
 
+        // Running the below with another grid (e.g. cellGrid) yields error
+        board.setCopyGrid(copyGrid);
+        assertEquals(copyGrid, board.getCopyGrid());
+    }
+
+    @Test
+    public void setCellGrid() throws Exception {
+        board = new Board();
+        Cell cellGrid[][] = new Cell[gridWidth][gridHeight];
+
+        board.setCellGrid(cellGrid);
+        assertEquals(cellGrid, board.getCellGrid());
+    }
+
+    @Test
+    public void setCopyGrid() throws Exception {
+        board = new Board();
+        Cell copyGrid[][] = new Cell[gridWidth][gridHeight];
+
+        // Running the below with another grid (e.g. cellGrid) yields error
+        board.setCopyGrid(copyGrid);
+        assertEquals(copyGrid, board.getCopyGrid());
     }
 
     @Test
     public void checkCellAlive() throws Exception {
+        board = new Board();
+        Board board2 = new Board();
 
+        // Should be false when coordinator is outside of board
+        assertFalse(board.checkCellAlive(-1, 1));
+        assertFalse(board.checkCellAlive(1, -1));
+        assertFalse(board.checkCellAlive(gridWidth, 1));
+        assertFalse(board.checkCellAlive(1, gridHeight));
+
+        // Simple board with just (0,0) being alive
+        board2.cellGrid = new Cell[2][2];
+
+        try {
+            board2.cellGrid[0][0].setState(true);
+            board2.cellGrid[0][1].setState(false);
+            board2.cellGrid[1][0].setState(false);
+            board2.cellGrid[1][1].setState(false);
+        }
+        catch (NullPointerException e) {
+            System.out.println("These cell values are not valid!");
+        }
+
+        assertTrue(board2.checkCellAlive(0,0));
     }
 
     @Test

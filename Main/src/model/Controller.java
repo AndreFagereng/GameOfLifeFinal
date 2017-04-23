@@ -65,22 +65,22 @@ public class Controller implements Initializable {
 
 
 
-        //onPatternDraw();
+        onPatternDraw();
 
         colorPicker.setValue(Color.valueOf("#ffffb3"));
         aliveCellColor = colorPicker.getValue();
         gc = canvas.getGraphicsContext2D();
 
-        DynamicGameBoard dynamicGameBoard = new DynamicGameBoard(10, 10, false);
+        /*DynamicGameBoard dynamicGameBoard = new DynamicGameBoard(10, 10, false);
 
         dynamicGameBoard.testGameBoard(gc);
-        dynamicGameBoard.testMethod();
+        dynamicGameBoard.testMethod();*/
 
 
 
 
 
-        /*board = new Board(canvas);
+        board = new Board(canvas);
         gdb = new GraphicsDisplayBoard(gc, canvas);
 
 
@@ -88,7 +88,7 @@ public class Controller implements Initializable {
 
         showGenerationText();
         timerMethod();
-        onChangeColor();*/
+        onChangeColor();
 
 
 
