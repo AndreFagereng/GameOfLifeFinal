@@ -1,5 +1,7 @@
 package model;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.*;
 import javafx.scene.paint.Color;
@@ -23,6 +25,7 @@ public class DynamicGameBoard {
     ArrayList<Cell> copyTempArray;
     Cell cell;
     GraphicsDisplayDynamicBoard graphicsDisplayDynamicBoard;
+    protected IntegerProperty generation = new SimpleIntegerProperty(this, "generation");
 
 
     public DynamicGameBoard(int width, int height, boolean state) {
