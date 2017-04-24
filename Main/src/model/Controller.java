@@ -90,6 +90,7 @@ public class Controller implements Initializable {
     }
     public void nextGenDyn(){
         dynamicGameBoard.onNextGen(gc);
+        System.out.println("Mellomrom");
     }
 
     private void onPatternDraw() {
