@@ -2,6 +2,8 @@ package model;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -78,7 +80,16 @@ public class Controller implements Initializable {
         dynamicGameBoard.initializeDynamicBoard();
         graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard,gc,aliveCellColor);
 
+        zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                canvas.setScaleX(newValue.doubleValue()/10);
+                canvas.setScaleY(newValue.doubleValue()/10);
+            }
+        });
+
         timerMethod();
+        gc.scale(canvas.getScaleX(), canvas.getScaleY());
         onChangeColor();
 
 
@@ -130,6 +141,7 @@ public class Controller implements Initializable {
             }
         };
     }
+
 
     public void onClear() {
         dynamicGameBoard.clearCellState();
