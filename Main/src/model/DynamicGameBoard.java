@@ -89,9 +89,10 @@ public class DynamicGameBoard {
     }
 
     public void onNextGen(){
-        setAllFalse();
+
         checkNeighbours(cellArrayList, tempArray);
         copyArrayList();
+
     }
 
     public void clearCellState(){
@@ -103,14 +104,14 @@ public class DynamicGameBoard {
     }
 
 
-    public void setAllFalse(){
+    /*public void setAllFalse(){
 
         for (ArrayList<Cell> array : cellArrayList) {
             for (Cell anArray : tempArray) {
                     anArray.setArrayState(false);
             }
         }
-    }
+    }*/
 
     public void copyArrayList(){
         for (int i = 0; i < copyArrayList.size(); i++) {
@@ -175,11 +176,8 @@ public class DynamicGameBoard {
 
     }
 
-    public boolean checkCellAlive(int x, int y) {
-        if (x == -1 || y == -1 || x == tempArray.size() || y == cellArrayList.size()) {
-            return false;
-        }
-        return cellArrayList.get(x).get(y).getArrayState();
+    protected boolean checkCellAlive(int x, int y) {
+        return !(x == -1 || y == -1 || x == tempArray.size() || y == cellArrayList.size()) && cellArrayList.get(x).get(y).getArrayState();
     }
 
 

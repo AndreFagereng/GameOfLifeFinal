@@ -81,6 +81,7 @@ public class Controller implements Initializable {
         timerMethod();
         onChangeColor();
 
+
      /*   board = new Board(canvas);
         gdb = new GraphicsDisplayBoard(gc, canvas);
 
@@ -123,7 +124,6 @@ public class Controller implements Initializable {
                     gdb.drawNextGen(gc, aliveCellColor, board);*/
 
                     nextGenDyn();
-
                     speed = 0;
                     //board.generation.set(board.generation.get() + 1);
                 }

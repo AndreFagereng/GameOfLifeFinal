@@ -9,10 +9,12 @@ import javafx.scene.paint.Color;
 public class GraphicsDisplayDynamicBoard {
 
     Color bkGroundColor = Color.LIGHTGREY;
+    int cellSize = 10;
 
     public GraphicsDisplayDynamicBoard(){
 
     }
+
 
 
     public void drawNextGen(DynamicGameBoard dynamicGameBoard, GraphicsContext gc, Color color){
@@ -20,10 +22,10 @@ public class GraphicsDisplayDynamicBoard {
             for (int y = 0; y < dynamicGameBoard.tempArray.size(); y++) {
                 if (dynamicGameBoard.checkCellAlive(i, y)) {
                     gc.setFill(color);
-                    gc.fillRect(10 * i, 10 * y, 9, 9);
+                    gc.fillRect(cellSize * i, cellSize * y, cellSize, cellSize);
                 }else if(!dynamicGameBoard.checkCellAlive(i, y)) {
                     gc.setFill(Color.WHITE);
-                    gc.fillRect(10 * i, 10 * y, 9, 9);
+                    gc.fillRect(cellSize * i, cellSize * y, cellSize, cellSize);
                 }
 
             }
@@ -35,7 +37,7 @@ public class GraphicsDisplayDynamicBoard {
             for (int y = 0; y < dynamicGameBoard.tempArray.size(); y++) {
                 if(dynamicGameBoard.checkCellAlive(x, y))
                 gc.setFill(Color.WHITE);
-                gc.fillRect(x * 10, y * 10, 9, 9);
+                gc.fillRect(cellSize * x, cellSize * y, cellSize, cellSize);
 
             }
         }
