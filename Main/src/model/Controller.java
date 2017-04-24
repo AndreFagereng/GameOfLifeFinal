@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ResourceBundle;
@@ -59,6 +58,7 @@ public class Controller implements Initializable {
     File RLEFormatFile;
     BufferedReader bufferedReader;
     DynamicGameBoard dynamicGameBoard;
+    GraphicsDisplayDynamicBoard graphicsDisplayDynamicBoard;
 
 
     @Override
@@ -72,10 +72,14 @@ public class Controller implements Initializable {
         aliveCellColor = colorPicker.getValue();
         gc = canvas.getGraphicsContext2D();
 
-        dynamicGameBoard = new DynamicGameBoard(10, 10, false);
+        dynamicGameBoard = new DynamicGameBoard(100, 100, false);
+        graphicsDisplayDynamicBoard = new GraphicsDisplayDynamicBoard();
 
-        dynamicGameBoard.testGameBoard(gc);
+        dynamicGameBoard.initializeDynamicBoard();
+        graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard,gc,aliveCellColor);
 
+        timerMethod();
+        onChangeColor();
 
      /*   board = new Board(canvas);
         gdb = new GraphicsDisplayBoard(gc, canvas);
@@ -89,7 +93,8 @@ public class Controller implements Initializable {
 
     }
     public void nextGenDyn(){
-        dynamicGameBoard.onNextGen(gc);
+        dynamicGameBoard.onNextGen();
+        graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc,aliveCellColor);
         System.out.println("Mellomrom");
     }
 
@@ -114,25 +119,33 @@ public class Controller implements Initializable {
             public void handle(long now) {
                 speed++;
                 if (speed > Math.abs((int) speedSlider.getValue())) {
-                    gdb.updateBoard(gc);
-                    gdb.drawNextGen(gc, aliveCellColor, board);
-                    
+                    /*gdb.updateBoard(gc);
+                    gdb.drawNextGen(gc, aliveCellColor, board);*/
+
+                    nextGenDyn();
 
                     speed = 0;
-                    board.generation.set(board.generation.get() + 1);
+                    //board.generation.set(board.generation.get() + 1);
                 }
             }
         };
     }
 
-
     public void onClear() {
+        dynamicGameBoard.clearCellState();
+        graphicsDisplayDynamicBoard.clearDrawing(dynamicGameBoard, gc);
+        startPauseBtn.setText("Start");
+        timer.stop();
+        //clearGenerationText();
+    }
+
+    /*public void onClear() {
         board.clearCellState();
         gdb.clearBoard(gc);
         startPauseBtn.setText("Start");
         timer.stop();
         clearGenerationText();
-    }
+    }*/
 
     public void onStop() {
         timer.stop();
@@ -140,33 +153,65 @@ public class Controller implements Initializable {
 
     public void onStart() {
 
-        if (startPauseBtn.getText().toString().equals("Start")) {
+        if (startPauseBtn.getText().equals("Start")) {
             startPauseBtn.setText("Pause");
             timer.start();
-        } else if (startPauseBtn.getText().toString().equals("Pause")) {
+        } else if (startPauseBtn.getText().equals("Pause")) {
             startPauseBtn.setText("Start");
             timer.stop();
         }
     }
 
-    public void nextGen() {
+    /*public void nextGen() {
         timer.stop();
         startPauseBtn.setText("Start");
         gdb.updateBoard(gc);
         gdb.drawNextGen(gc, aliveCellColor, board);
         board.generation.set(board.generation.get() + 1);
-    }
-
-
+    }*/
 
     private void onChangeColor() {
         colorPicker.setOnAction(e -> {
             aliveCellColor = colorPicker.getValue();
-            gdb.drawNextGen(gc, aliveCellColor, board);
+            graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard,gc,aliveCellColor);
         });
     }
 
+
+  /*  private void onChangeColor() {
+        colorPicker.setOnAction(e -> {
+            aliveCellColor = colorPicker.getValue();
+            gdb.drawNextGen(gc, aliveCellColor, board);
+        });
+    }*/
+
     private EventHandler onClickCellEvent = new EventHandler() {
+        @Override
+        public void handle(Event event) {
+            int x = getXPosition(event);
+            int y = getYPosition(event);
+
+            if (x == -1 || y == -1 || x == canvas.getHeight() /10 || y == canvas.getWidth() /10) {
+                throw new ArrayIndexOutOfBoundsException();
+            }
+            if (dynamicGameBoard.checkCellAlive(x,y)) {
+                dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(false);
+
+                gc.setFill(Color.WHITE);
+                gc.fillRect(x * 10, y * 10, 9,9);
+
+            } else {
+                dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(true);
+
+                gc.setFill(colorPicker.getValue());
+                gc.fillRect(x * 10, y * 10, 9,9);
+
+
+            }
+        }
+    };
+
+    /*private EventHandler onClickCellEvent = new EventHandler() {
         @Override
         public void handle(Event event) {
             int x = getXPosition(event);
@@ -189,10 +234,28 @@ public class Controller implements Initializable {
 
             }
         }
-    };
-
+    };*/
 
     public EventHandler onDragCellEvent = new EventHandler() {
+        @Override
+        public void handle(Event event) {
+            int x = getXPosition(event);
+            int y = getYPosition(event);
+            try {
+                if (!dynamicGameBoard.checkCellAlive(x, y)) {
+                    dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(true);
+
+                    gc.setFill(aliveCellColor);
+                    gc.fillRect(x * 10, y * 10, 9, 9);
+
+                }
+            }catch (ArrayIndexOutOfBoundsException aoob){
+                System.out.println("Array is out of bound ( TOP OR LEFT ) ");
+            }
+
+        }};
+
+    /*public EventHandler onDragCellEvent = new EventHandler() {
         @Override
         public void handle(Event event) {
             int x = getXPosition(event);
@@ -209,7 +272,7 @@ public class Controller implements Initializable {
 
             }
         }
-    };
+    };*/
 
 
     public void createPattern() throws Exception {
@@ -222,6 +285,56 @@ public class Controller implements Initializable {
     }
 
     public void onReadURLFile() throws Exception  {
+
+        FileHandler fileHandler = new FileHandler();
+
+        String test = JOptionPane.showInputDialog("Paste URL");
+        URL url = new URL(test);
+        URLConnection conn = url.openConnection();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+
+        String text = "";
+        try {
+            text = fileHandler.readURLFile(bufferedReader);
+        }catch (NullPointerException nullPoint){
+            System.out.println("Catch works");
+        }
+        dynamicGameBoard.clearCellState();
+        graphicsDisplayDynamicBoard.clearDrawing(dynamicGameBoard,gc);
+        fileHandler.readStringToBoard(text, dynamicGameBoard);
+        graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard,gc, colorPicker.getValue());
+
+    }
+    public void onOpenRLEFile() throws Exception{
+
+        try {
+            FileHandler fileHandler = new FileHandler();
+            fileChooser = new FileChooser();
+            RLEFormatFile = fileChooser.showOpenDialog(null);
+
+
+            if (RLEFormatFile != null) {
+                fileHandler.readOpenFile(RLEFormatFile);
+                dynamicGameBoard.clearCellState();
+                graphicsDisplayDynamicBoard.clearDrawing(dynamicGameBoard, gc);
+            } else {
+                System.out.println("Something wrong with file");
+            }
+
+            try {
+                fileHandler.readStringToBoard(fileHandler.readOpenFile(RLEFormatFile), dynamicGameBoard);
+                graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, colorPicker.getValue());
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("ArrayOutOfBound");
+            }
+        }catch (NullPointerException np){
+            System.out.println("No file selected");
+
+        }
+    }
+
+    /*public void onReadURLFile() throws Exception  {
 
         FileHandler fileHandler = new FileHandler();
 
@@ -241,10 +354,12 @@ public class Controller implements Initializable {
             fileHandler.readStringToBoard(text, gdb);
             gdb.drawNextGen(gc, colorPicker.getValue(), board);
 
-    }
+    }*/
 
 
-    public void onOpenRLEFile() throws Exception{
+
+
+   /* public void onOpenRLEFile() throws Exception{
 
         try {
             FileHandler fileHandler = new FileHandler();
@@ -269,7 +384,7 @@ public class Controller implements Initializable {
             System.out.println("No file selected");
 
         }
-    }
+    }*/
 
 
 
@@ -316,6 +431,32 @@ public class Controller implements Initializable {
             int offsetY = getYPosition(event);
 
             try{
+                for (int x = 0; x < pattern.length; x++) {
+                    for (int y = 0; y < pattern[x].length; y++)
+                        if (pattern[x][y] == 1) {
+                            dynamicGameBoard.cellArrayList.get(x + offsetX).get(y + offsetY).setArrayState(true);
+                            System.out.println("1");
+                        } else if(pattern[x][y] == 0) {
+                            dynamicGameBoard.cellArrayList.get(x + offsetX).get(y + offsetY).setArrayState(false);
+                            System.out.println("0");
+                        }
+                    graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard,gc,colorPicker.getValue());
+                }
+            }catch(ArrayIndexOutOfBoundsException e){
+                System.out.println("ArrayOutOfBound exception catched");
+            }
+        }
+    };
+
+    /*private EventHandler onDrawSelectedPattern = new EventHandler(){
+        @Override
+        public void handle(Event event) {
+
+            int[][] pattern = newPattern;
+            int offsetX = getXPosition(event);
+            int offsetY = getYPosition(event);
+
+            try{
             for (int x = 0; x < pattern.length; x++) {
                 for (int y = 0; y < pattern[x].length; y++)
                     if (pattern[x][y] == 1) {
@@ -331,9 +472,19 @@ public class Controller implements Initializable {
                 System.out.println("ArrayOutOfBound exception catched");
             }
         }
-    };
+    };*/
 
     private int getYPosition(Event event) {
+        MouseEvent e = (MouseEvent) event;
+        return (int) (e.getY() / 10);
+    }
+
+    private int getXPosition(Event event) {
+        MouseEvent e = (MouseEvent) event;
+        return (int) (e.getX() / 10);
+    }
+
+   /* private int getYPosition(Event event) {
         MouseEvent e = (MouseEvent) event;
         return (int) (e.getY() / board.cellSize);
     }
@@ -341,7 +492,7 @@ public class Controller implements Initializable {
     private int getXPosition(Event event) {
         MouseEvent e = (MouseEvent) event;
         return (int) (e.getX() / board.cellSize);
-    }
+    }*/
 
 
     /*

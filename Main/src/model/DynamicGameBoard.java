@@ -22,6 +22,7 @@ public class DynamicGameBoard {
     ArrayList<Cell> tempArray;
     ArrayList<Cell> copyTempArray;
     Cell cell;
+    GraphicsDisplayDynamicBoard graphicsDisplayDynamicBoard;
 
 
     public DynamicGameBoard(int width, int height, boolean state) {
@@ -32,6 +33,8 @@ public class DynamicGameBoard {
         copyTempArray = new ArrayList<>();
         tempArray = new ArrayList<>();
         cell = new Cell(state);
+
+        graphicsDisplayDynamicBoard = new GraphicsDisplayDynamicBoard();
 
 
 
@@ -61,7 +64,6 @@ public class DynamicGameBoard {
         cellArrayList.get(1).get(4).setArrayState(true);
         cellArrayList.get(2).get(4).setArrayState(true);
 
-
         cellArrayList.get(1).get(2).setArrayState(true);
         cellArrayList.get(2).get(3).setArrayState(true);
 
@@ -78,24 +80,18 @@ public class DynamicGameBoard {
 
 
 
-    public void testGameBoard(GraphicsContext gc) {
+    public void initializeDynamicBoard() {
         randomizeStates(cellArrayList);
-        setAllFalse(copyArrayList);
-
-        checkNeighbours(cellArrayList, tempArray);
-
-        copyArrayList();
-        nextGenDynamic(gc);
 
         System.out.println(tempArray.size());
         System.out.println(cellArrayList.size());
 
     }
-    public void onNextGen(GraphicsContext gc){
-        setAllFalse(copyArrayList);
+
+    public void onNextGen(){
+        setAllFalse();
         checkNeighbours(cellArrayList, tempArray);
         copyArrayList();
-        nextGenDynamic(gc);
     }
 
     public void clearCellState(){
@@ -107,11 +103,11 @@ public class DynamicGameBoard {
     }
 
 
-    public void setAllFalse(ArrayList<ArrayList<Cell>> cellArrayList){
+    public void setAllFalse(){
 
         for (ArrayList<Cell> array : cellArrayList) {
-            for (Cell anArray : array) {
-                    anArray.setCopyArrayState(false);
+            for (Cell anArray : tempArray) {
+                    anArray.setArrayState(false);
             }
         }
     }
@@ -128,22 +124,6 @@ public class DynamicGameBoard {
         }
     }
 
-
-    public void nextGenDynamic(GraphicsContext gc){
-
-        for (int i = 0; i < cellArrayList.size(); i++) {
-            for (int y = 0; y < tempArray.size(); y++) {
-                if (cellArrayList.get(i).get(y).getArrayState()) {
-                    gc.setFill(Color.BLACK);
-                    gc.fillRect(10 * i, 10 * y, 9, 9);
-                }else if(!cellArrayList.get(i).get(y).getArrayState()) {
-                    gc.setFill(Color.WHITE);
-                    gc.fillRect(10 * i, 10 * y, 9, 9);
-                }
-
-            }
-        }
-    }
 
 
 
@@ -187,9 +167,9 @@ public class DynamicGameBoard {
                     copyArrayList.get(x).get(y).setCopyArrayState(true);
                 }
 
-                System.out.print(neighbour + " ");
+                //System.out.print(neighbour + " ");
             }
-            System.out.println("\n");
+            //System.out.println("\n");
         }
         clearCellState();
 

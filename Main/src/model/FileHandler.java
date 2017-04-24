@@ -68,9 +68,25 @@ public class FileHandler {
 
     }
 
+    public void readStringToBoard(String RLEText, DynamicGameBoard dynamicGameBoard){
 
+        for(int i = 0; i < RLEText.length(); i++){
+            if(RLEText.charAt(i) == 'o'){
+                dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(true);
+                x++;
+            }
+            if(RLEText.charAt(i) == 'b'){
+                dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(false);
+                x++;
+            }
+            if(RLEText.charAt(i) == '$'){
+                x = 0;
+                y++;
+            }
+        }
+    }
 
-    public void readStringToBoard(String RLEText, GraphicsDisplayBoard gdb){
+    /*public void readStringToBoard(String RLEText, GraphicsDisplayBoard gdb){
 
         for(int i = 0; i < RLEText.length(); i++){
             if(RLEText.charAt(i) == 'o'){
@@ -86,7 +102,7 @@ public class FileHandler {
                 y++;
             }
         }
-    }
+    }*/
 
 
 
