@@ -58,6 +58,7 @@ public class Controller implements Initializable {
     FileChooser fileChooser;
     File RLEFormatFile;
     BufferedReader bufferedReader;
+    DynamicGameBoard dynamicGameBoard;
 
 
     @Override
@@ -71,27 +72,24 @@ public class Controller implements Initializable {
         aliveCellColor = colorPicker.getValue();
         gc = canvas.getGraphicsContext2D();
 
-        /*DynamicGameBoard dynamicGameBoard = new DynamicGameBoard(10, 10, false);
+        dynamicGameBoard = new DynamicGameBoard(10, 10, false);
 
         dynamicGameBoard.testGameBoard(gc);
-        dynamicGameBoard.testMethod();*/
 
 
-
-
-
-        board = new Board(canvas);
+     /*   board = new Board(canvas);
         gdb = new GraphicsDisplayBoard(gc, canvas);
-
-
 
 
         showGenerationText();
         timerMethod();
         onChangeColor();
+*/
 
 
-
+    }
+    public void nextGenDyn(){
+        dynamicGameBoard.onNextGen(gc);
     }
 
     private void onPatternDraw() {
@@ -157,6 +155,8 @@ public class Controller implements Initializable {
         gdb.drawNextGen(gc, aliveCellColor, board);
         board.generation.set(board.generation.get() + 1);
     }
+
+
 
     private void onChangeColor() {
         colorPicker.setOnAction(e -> {
