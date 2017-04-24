@@ -2,6 +2,7 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Menu?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="860.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="model.Controller">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="model.Controller">
     <children>
         <MenuBar prefHeight="32.0" prefWidth="887.0">
             <menus>
@@ -83,7 +84,7 @@
             <font>
                 <Font size="20.0" />
             </font></Text>
-        <Canvas fx:id="canvas" height="460.0" layoutX="30.0" layoutY="95.0" width="800.0" />
+        <Canvas fx:id="canvas" accessibleRole="SLIDER" height="460.0" layoutX="30.0" layoutY="95.0" width="800.0" />
         <ColorPicker fx:id="colorPicker" layoutX="425.0" layoutY="41.0" prefHeight="38.0" prefWidth="127.0" promptText="asd" />
         <Text layoutX="677.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GEN:" wrappingWidth="32.0">
             <font>
@@ -100,5 +101,7 @@
                 <Font name="SimSun" size="18.0" />
             </font>
         </Button>
+      <CheckBox fx:id="checkBoxSound" layoutX="852.0" layoutY="95.0" mnemonicParsing="false" onAction="#onMuteSound" text="Sound" />
+      <Slider fx:id="volumeSlider" blockIncrement="1.0" layoutX="852.0" layoutY="138.0" max="1.0" min="-1.0" orientation="VERTICAL" value="0.5" />
     </children>
 </Pane>

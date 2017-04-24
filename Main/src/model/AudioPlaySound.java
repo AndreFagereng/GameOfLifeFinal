@@ -13,7 +13,7 @@ import java.io.IOException;
 public class AudioPlaySound implements LineListener {
 
 
-    private String audioFilePath = "C:/Users/Andre/IdeaProjects/GameOfLifeFinal/Resources/Sound/ChillingMusic.wav";
+    private String audioFilePath = "../GameOfLifeFinal/Resources/Sound/ChillingMusic.wav";
 
     File file = new File(audioFilePath);
     AudioInputStream audioInputStream;
