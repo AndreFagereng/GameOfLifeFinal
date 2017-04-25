@@ -36,11 +36,13 @@ public class AudioPlaySound implements LineListener {
             e.printStackTrace();
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
     }
 
-    protected void loadAudioFile(File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+    protected void loadAudioFile(File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
         try{
 
             audioInputStream = AudioSystem.getAudioInputStream(file);
@@ -54,8 +56,10 @@ public class AudioPlaySound implements LineListener {
         }
 
         clip.open(audioInputStream);
+
         floatVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         floatVolume.setValue(-20.0f);
+
 
     }
 
@@ -66,6 +70,9 @@ public class AudioPlaySound implements LineListener {
     int lastFrame = 0;
 
     public void resume() {
+
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+
         if (clip != null && !clip.isRunning()) {
 
             if (lastFrame < clip.getFrameLength()) {

@@ -26,6 +26,7 @@ public class DynamicGameBoard {
     Cell cell;
     GraphicsDisplayDynamicBoard graphicsDisplayDynamicBoard;
     protected IntegerProperty generation = new SimpleIntegerProperty(this, "generation");
+    protected IntegerProperty cellsAlive = new SimpleIntegerProperty(this, "cellsAlive");
 
 
     public DynamicGameBoard(int width, int height, boolean state) {
@@ -38,7 +39,6 @@ public class DynamicGameBoard {
         cell = new Cell(state);
 
         graphicsDisplayDynamicBoard = new GraphicsDisplayDynamicBoard();
-
 
 
         //IntStream.range(0,width).forEach(p-> tempArray.add(new Cell(state)));
@@ -57,9 +57,8 @@ public class DynamicGameBoard {
         });
 
 
-
-
     }
+
 
     public void randomizeStates(ArrayList<ArrayList<Cell>> cellArrayList) {
 
@@ -82,7 +81,6 @@ public class DynamicGameBoard {
     }
 
 
-
     public void initializeDynamicBoard() {
         randomizeStates(cellArrayList);
 
@@ -91,14 +89,16 @@ public class DynamicGameBoard {
 
     }
 
-    public void onNextGen(){
-
+    public void onNextGen() {
+        cellsAlive.set(0);
         checkNeighbours(cellArrayList, tempArray);
         copyArrayList();
 
+
+
     }
 
-    public void clearCellState(){
+    public void clearCellState() {
         for (int x = 0; x < cellArrayList.size(); x++) {
             for (int y = 0; y < tempArray.size(); y++) {
                 cellArrayList.get(x).get(y).setArrayState(false);
@@ -116,20 +116,19 @@ public class DynamicGameBoard {
         }
     }*/
 
-    public void copyArrayList(){
+    public void copyArrayList() {
         for (int i = 0; i < copyArrayList.size(); i++) {
             for (int y = 0; y < tempArray.size(); y++) {
                 if (copyArrayList.get(i).get(y).getCopyArrayState()) {
                     cellArrayList.get(i).get(y).setArrayState(true);
-                }else{
+                    cellsAlive.set(cellsAlive.get() + 1);
+                } else {
                     cellArrayList.get(i).get(y).setArrayState(false);
+
                 }
             }
         }
     }
-
-
-
 
 
     public int countNeighbours(int x, int y) {
@@ -146,7 +145,6 @@ public class DynamicGameBoard {
 
         return count;
     }
-
 
 
     protected void checkNeighbours(ArrayList<ArrayList<Cell>> cellArrayList, ArrayList<Cell> tempArray) {

@@ -8,7 +8,6 @@ import javafx.scene.paint.Color;
  */
 public class GraphicsDisplayDynamicBoard {
 
-    Color bkGroundColor = Color.LIGHTGREY;
     int cellSize = 10;
 
     public GraphicsDisplayDynamicBoard(){

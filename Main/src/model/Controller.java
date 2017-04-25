@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.io.*;
 import java.net.URL;
@@ -41,7 +42,7 @@ public class Controller implements Initializable {
     @FXML
     Slider speedSlider, zoomSlider, volumeSlider;
     @FXML
-    Text showGen;
+    Text showGen, showAliveCells;
     @FXML
     TextArea textAreaPattern;
     @FXML
@@ -80,12 +81,10 @@ public class Controller implements Initializable {
         colorPicker.setValue(Color.valueOf("#ffffb3"));
         aliveCellColor = colorPicker.getValue();
         gc = canvas.getGraphicsContext2D();
+        audioPlaySound = new AudioPlaySound();
 
         dynamicGameBoard = new DynamicGameBoard(100, 100, false);
         graphicsDisplayDynamicBoard = new GraphicsDisplayDynamicBoard();
-
-
-        audioPlaySound = new AudioPlaySound();
 
         dynamicGameBoard.initializeDynamicBoard();
         graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, aliveCellColor);
@@ -110,6 +109,7 @@ public class Controller implements Initializable {
         onChangeColor();
 */
         showGenerationText();
+        showAliveCellsText();
     }
 
     public void onMuteSound(){
@@ -125,7 +125,11 @@ public class Controller implements Initializable {
     public void nextGenDyn() {
         dynamicGameBoard.onNextGen();
         graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, aliveCellColor);
-        System.out.println("Mellomrom");
+    }
+
+    public void onNextGenStep(){
+        nextGenDyn();
+        dynamicGameBoard.generation.set(dynamicGameBoard.generation.get() + 1);
     }
 
     private void onPatternDraw() {
@@ -138,8 +142,16 @@ public class Controller implements Initializable {
         showGen.textProperty().bind(Bindings.concat(dynamicGameBoard.generation));
     }
 
+    private void showAliveCellsText(){
+        showAliveCells.textProperty().bind(Bindings.concat(dynamicGameBoard.cellsAlive));
+    }
+
     private void clearGenerationText() {
         dynamicGameBoard.generation.set(0);
+    }
+
+    private void clearShowAliveCellsText(){
+        dynamicGameBoard.cellsAlive.set(0);
     }
 
     /*private void showGenerationText() {
@@ -169,12 +181,14 @@ public class Controller implements Initializable {
     }
 
 
+
     public void onClear() {
         dynamicGameBoard.clearCellState();
         graphicsDisplayDynamicBoard.clearDrawing(dynamicGameBoard, gc);
         startPauseBtn.setText("Start");
         timer.stop();
         clearGenerationText();
+        clearShowAliveCellsText();
     }
 
     /*public void onClear() {
