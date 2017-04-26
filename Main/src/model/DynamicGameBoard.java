@@ -96,6 +96,7 @@ public class DynamicGameBoard {
 
 
 
+
     }
 
     public void clearCellState() {
@@ -107,23 +108,25 @@ public class DynamicGameBoard {
     }
 
 
-    /*public void setAllFalse(){
+    public void setCellState(int x, int y, boolean state){
 
-        for (ArrayList<Cell> array : cellArrayList) {
-            for (Cell anArray : tempArray) {
-                    anArray.setArrayState(false);
-            }
-        }
-    }*/
+       cellArrayList.get(x).get(y).setArrayState(state);
+
+    }
+
+    public void setCopyState(int x, int y, boolean state){
+        copyArrayList.get(x).get(y).setCopyArrayState(state);
+
+    }
 
     public void copyArrayList() {
         for (int i = 0; i < copyArrayList.size(); i++) {
             for (int y = 0; y < tempArray.size(); y++) {
                 if (copyArrayList.get(i).get(y).getCopyArrayState()) {
-                    cellArrayList.get(i).get(y).setArrayState(true);
+                    setCellState(i, y, true);
                     cellsAlive.set(cellsAlive.get() + 1);
                 } else {
-                    cellArrayList.get(i).get(y).setArrayState(false);
+                    setCellState(i, y, false);
 
                 }
             }
@@ -157,16 +160,16 @@ public class DynamicGameBoard {
 
                 // dies if < 2 neighbours
                 if (neighbour < 2) {
-                    copyArrayList.get(x).get(y).setCopyArrayState(false);
+                    setCopyState(x, y, false);
                     // dies if > 3 neighbours
                 } else if (neighbour > 3) {
-                    copyArrayList.get(x).get(y).setCopyArrayState(false);
+                    setCopyState(x, y, false);
                     // survives if  2 neighbours
                 } else if (neighbour == 2) {
-                    copyArrayList.get(x).get(y).setCopyArrayState(cellArrayList.get(x).get(y).getArrayState());
+                    setCopyState(x, y, cellArrayList.get(x).get(y).getArrayState());
                     // lives if 3 neighbours
                 } else if (neighbour == 3) {
-                    copyArrayList.get(x).get(y).setCopyArrayState(true);
+                    setCopyState(x, y, true);;
                 }
 
                 //System.out.print(neighbour + " ");

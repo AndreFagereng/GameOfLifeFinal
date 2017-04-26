@@ -29,7 +29,6 @@ public class Cell {
 
 
 
-
     public boolean getArrayState(){ return listCellState;}
     public boolean getCopyArrayState(){ return copyListCellState;}
 
