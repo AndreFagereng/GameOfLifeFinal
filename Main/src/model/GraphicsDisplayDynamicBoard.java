@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 /**
  * Created by Andre on 24.04.2017.
  */
-public class GraphicsDisplayDynamicBoard {
+public class GraphicsDisplayDynamicBoard extends Controller{
 
     int cellSize = 10;
 
@@ -14,11 +14,13 @@ public class GraphicsDisplayDynamicBoard {
 
     }
 
+    public int getCellSize(){
+        return cellSize;
+    }
 
 
     public void drawNextGen(DynamicGameBoard dynamicGameBoard, GraphicsContext gc, Color color){
 
-        dynamicGameBoard.cellArrayList.get(1).add(new Cell(false));
 
         for (int i = 0; i < dynamicGameBoard.cellArrayList.size(); i++) {
             for (int y = 0; y < dynamicGameBoard.tempArray.size(); y++) {

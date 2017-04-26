@@ -94,21 +94,36 @@ public class Controller implements Initializable {
         gc = canvas.getGraphicsContext2D();
         audioPlaySound = new AudioPlaySound();
 
-        dynamicGameBoard = new DynamicGameBoard(5, 5, false);
+        dynamicGameBoard = new DynamicGameBoard(80, 80, false);
         graphicsDisplayDynamicBoard = new GraphicsDisplayDynamicBoard();
 
-        dynamicGameBoard.initializeDynamicBoard();
+        //canvas.setScaleX(50);
+       // canvas.setScaleY(50);
         graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, aliveCellColor);
 
-        zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
+        zoomSlider.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                canvas.setScaleX(100);
+               canvas.setScaleY(zoomSlider.getValue() *10 );
+                canvas.setScaleX(zoomSlider.getValue()* 10);
+
+
+               // canvas.setScaleY(zoomSlider.getValue());
+            }
+        });
+
+       /* zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-                canvas.setScaleX(newValue.doubleValue() / 10);
-                canvas.setScaleY(newValue.doubleValue() / 10);
+                //canvas.setScaleX(newValue.doubleValue() / 10);
+                //canvas.setScaleY(newValue.doubleValue() / 10);
+                gc.scale(zoomSlider.getValue() , zoomSlider.getValue());
+                System.out.println(zoomSlider.getValue());
 
             }
-        });
+        });*/
 
 
      /*   board = new Board(canvas);
@@ -274,13 +289,13 @@ public class Controller implements Initializable {
                 dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(false);
 
                 gc.setFill(Color.WHITE);
-                gc.fillRect(x * 10, y * 10, 9, 9);
+                gc.fillRect(x * graphicsDisplayDynamicBoard.cellSize, y * graphicsDisplayDynamicBoard.cellSize, 9, 9);
 
             } else {
                 dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(true);
 
                 gc.setFill(colorPicker.getValue());
-                gc.fillRect(x * 10, y * 10, 9, 9);
+                gc.fillRect(x * graphicsDisplayDynamicBoard.cellSize, y * graphicsDisplayDynamicBoard.cellSize, 9, 9);
 
 
             }
@@ -322,7 +337,7 @@ public class Controller implements Initializable {
                     dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(true);
 
                     gc.setFill(aliveCellColor);
-                    gc.fillRect(x * 10, y * 10, 9, 9);
+                    gc.fillRect(x * graphicsDisplayDynamicBoard.getCellSize(), y * graphicsDisplayDynamicBoard.getCellSize(), graphicsDisplayDynamicBoard.getCellSize(), graphicsDisplayDynamicBoard.getCellSize());
 
                 }
             } catch (ArrayIndexOutOfBoundsException aoob) {

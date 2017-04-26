@@ -62,12 +62,8 @@ public class DynamicGameBoard {
 
     public void randomizeStates(ArrayList<ArrayList<Cell>> cellArrayList) {
 
-        cellArrayList.get(0).get(4).setArrayState(true);
-        cellArrayList.get(1).get(4).setArrayState(true);
-        cellArrayList.get(2).get(4).setArrayState(true);
 
-        cellArrayList.get(1).get(2).setArrayState(true);
-        cellArrayList.get(2).get(3).setArrayState(true);
+
 
         /*boolean state = !cellArrayList.get(0).get(0).getArrayState();
         for (ArrayList<Cell> array : cellArrayList) {
@@ -84,17 +80,16 @@ public class DynamicGameBoard {
     public void initializeDynamicBoard() {
         randomizeStates(cellArrayList);
 
-        System.out.println(tempArray.size());
-        System.out.println(cellArrayList.size());
-
     }
 
     public void onNextGen() {
+
+
+        collisionChecker();
+        System.out.println(cellArrayList.size());
         cellsAlive.set(0);
         checkNeighbours(cellArrayList, tempArray);
         copyArrayList();
-
-
 
 
     }
@@ -110,22 +105,74 @@ public class DynamicGameBoard {
 
     public void setCellState(int x, int y, boolean state){
        cellArrayList.get(x).get(y).setArrayState(state);
-        while(cellArrayList.size() < x || cellArrayList.size() < y){
-            extendBoard();
+    }
+
+    private void collisionChecker () {
+
+        for(int i = 0; i < cellArrayList.size(); i++){
+            if(cellArrayList.get(cellArrayList.size()-2).get(i).getArrayState()){
+                extendBoardDownRight();
+
+            }else if(cellArrayList.get(i).get(cellArrayList.size()-2).getArrayState()){
+                extendBoardDownRight();
+
+            }else if(cellArrayList.get(0).get(i).getArrayState()){
+               // extendBoardUpLeft();
+
+            }else if(cellArrayList.get(i).get(0).getArrayState()){
+               //extendBoardUpLeft();
+
+            }
+        }
+
+    }
+
+
+
+    public void extendBoardUpLeft(){
+        tempArray = new ArrayList<>();
+        copyTempArray = new ArrayList<>();
+
+        IntStream.range(0, cellArrayList.size()).forEach(p -> {
+            tempArray.add(0, new Cell(false));
+        });
+        cellArrayList.add(new ArrayList<>(tempArray));
+
+        for (ArrayList<Cell> array : cellArrayList) {
+            array.add(0, new Cell(false));
+        }
+
+        IntStream.range(0, cellArrayList.size()).forEach(p -> {
+            copyTempArray.add(new Cell(false));
+        });
+        copyArrayList.add(new ArrayList<>(copyTempArray));
+
+        for (ArrayList<Cell> array : copyArrayList) {
+            array.add(0, new Cell(false));
         }
     }
 
-    private void extendBoard() {
+    private void extendBoardDownRight() {
+        tempArray = new ArrayList<>();
+        copyTempArray = new ArrayList<>();
 
-        ArrayList<Cell> newTempArray = new ArrayList<>(cellArrayList.size() + 1);
-        cellArrayList.add(new ArrayList<>(newTempArray));
-
-        IntStream.range(cellArrayList.size(), cellArrayList.size() + 1).forEach(p -> {
-            tempArray.clear();
-            IntStream.range(cellArrayList.size(), cellArrayList.size() + 1).forEach(e -> tempArray.add(new Cell(false)));
-            cellArrayList.add(new ArrayList<>(tempArray));
-
+        IntStream.range(0, cellArrayList.size()).forEach(p -> {
+            tempArray.add(new Cell(false));
         });
+        cellArrayList.add(new ArrayList<>(tempArray));
+
+        for (ArrayList<Cell> array : cellArrayList) {
+            array.add(new Cell(false));
+        }
+
+        IntStream.range(0, cellArrayList.size()).forEach(p -> {
+            copyTempArray.add(new Cell(false));
+        });
+        copyArrayList.add(new ArrayList<>(copyTempArray));
+
+        for (ArrayList<Cell> array : copyArrayList) {
+            array.add(new Cell(false));
+        }
 
     }
 
@@ -135,13 +182,13 @@ public class DynamicGameBoard {
     }
 
     public void copyArrayList() {
-        for (int i = 0; i < copyArrayList.size(); i++) {
-            for (int y = 0; y < tempArray.size(); y++) {
-                if (copyArrayList.get(i).get(y).getCopyArrayState()) {
-                    setCellState(i, y, true);
+        for (int x = 0; x < copyArrayList.size(); x++) {
+            for (int y = 0; y < cellArrayList.size(); y++) {
+                if (copyArrayList.get(x).get(y).getCopyArrayState()) {
+                    setCellState(x, y, true);
                     cellsAlive.set(cellsAlive.get() + 1);
                 } else {
-                    setCellState(i, y, false);
+                    setCellState(x, y, false);
 
                 }
             }
@@ -196,7 +243,7 @@ public class DynamicGameBoard {
     }
 
     protected boolean checkCellAlive(int x, int y) {
-        return !(x == -1 || y == -1 || x == tempArray.size() || y == cellArrayList.size()) && cellArrayList.get(x).get(y).getArrayState();
+        return !(x == -1 || y == -1 || x == cellArrayList.size() || y == cellArrayList.size()) && cellArrayList.get(x).get(y).getArrayState();
     }
 
 
