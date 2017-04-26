@@ -61,6 +61,7 @@ public class Controller implements Initializable {
     //Controller class
 
     private Board board;
+    private DynamicGameBoard dynamicGameBoard;
     private GraphicsContext gc;
     private AnimationTimer timer;
     private int speed;
@@ -70,7 +71,6 @@ public class Controller implements Initializable {
     FileChooser fileChooser;
     File RLEFormatFile;
     BufferedReader bufferedReader;
-    DynamicGameBoard dynamicGameBoard;
     GraphicsDisplayDynamicBoard graphicsDisplayDynamicBoard;
     AudioPlaySound audioPlaySound;
     Timeline timeline;
@@ -85,7 +85,7 @@ public class Controller implements Initializable {
         timerMethod();
 
 
-        colorPicker.setValue(Color.valueOf("#ffffb3"));
+        colorPicker.setValue(Color.valueOf("#1a3399"));
         aliveCellColor = colorPicker.getValue();
         gc = canvas.getGraphicsContext2D();
         audioPlaySound = new AudioPlaySound();
@@ -106,9 +106,6 @@ public class Controller implements Initializable {
 
             }
         });
-
-
-        //gc.scale(canvas.getScaleX(), canvas.getScaleY());
 
 
      /*   board = new Board(canvas);
@@ -154,6 +151,8 @@ public class Controller implements Initializable {
     }
 
     public void onNextGenStep(){
+        timer.stop();
+        startPauseBtn.setText("Start");
         nextGenDyn();
         dynamicGameBoard.generation.set(dynamicGameBoard.generation.get() + 1);
     }
