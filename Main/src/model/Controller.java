@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -27,7 +28,9 @@ import javafx.util.Duration;
 
 import javax.sound.sampled.Clip;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ResourceBundle;
@@ -74,6 +77,7 @@ public class Controller implements Initializable {
     GraphicsDisplayDynamicBoard graphicsDisplayDynamicBoard;
     AudioPlaySound audioPlaySound;
     Timeline timeline;
+    Alert alert;
 
 
     @Override
@@ -100,7 +104,6 @@ public class Controller implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-
                 canvas.setScaleX(newValue.doubleValue() / 10);
                 canvas.setScaleY(newValue.doubleValue() / 10);
 
@@ -119,15 +122,18 @@ public class Controller implements Initializable {
         timerMethod();
         onChangeColor();
 */
-        showGenerationText();
-        showAliveCellsText();
-
+        showText(showGen,dynamicGameBoard.generation);
+        showText(showAliveCells, dynamicGameBoard.cellsAlive);
 
         timeLineMethod();
+
+
     }
 
 
     public void timeLineMethod(){
+
+
 
         KeyFrame keyFrame = new KeyFrame(Duration.millis(1000));
 
@@ -164,21 +170,14 @@ public class Controller implements Initializable {
         choicePattern.getSelectionModel().selectLast();
     }
 
-    private void showGenerationText() {
-        showGen.textProperty().bind(Bindings.concat(dynamicGameBoard.generation));
+    private void showText(Text text, IntegerProperty integerProperty) {
+        text.textProperty().bind(Bindings.concat(integerProperty));
     }
 
-    private void showAliveCellsText(){
-        showAliveCells.textProperty().bind(Bindings.concat(dynamicGameBoard.cellsAlive));
+    private void clearText(IntegerProperty integerProperty) {
+        integerProperty.setValue(0);
     }
 
-    private void clearGenerationText() {
-        dynamicGameBoard.generation.set(0);
-    }
-
-    private void clearShowAliveCellsText(){
-        dynamicGameBoard.cellsAlive.set(0);
-    }
 
     /*private void showGenerationText() {
         showGen.textProperty().bind(Bindings.concat(board.generation));
@@ -213,8 +212,8 @@ public class Controller implements Initializable {
         graphicsDisplayDynamicBoard.clearDrawing(dynamicGameBoard, gc);
         startPauseBtn.setText("Start");
         timer.stop();
-        clearGenerationText();
-        clearShowAliveCellsText();
+        clearText(dynamicGameBoard.cellsAlive);
+        clearText(dynamicGameBoard.generation);
     }
 
     /*public void onClear() {
@@ -365,19 +364,30 @@ public class Controller implements Initializable {
 
     public void onReadURLFile() throws Exception {
 
+        alert= new Alert(Alert.AlertType.WARNING);
+        alert.setContentText("No URL entered or wrong file");
+
         FileHandler fileHandler = new FileHandler();
 
-        String test = JOptionPane.showInputDialog("Paste URL");
-        URL url = new URL(test);
-        URLConnection conn = url.openConnection();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        try {
+            String urlPath = JOptionPane.showInputDialog("Paste URL");
+            URL url = new URL(urlPath);
+            URLConnection conn = url.openConnection();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
+        }catch (MalformedURLException mal){
+            System.out.println("Wrong URLPath");
+            alert.show();
+        }catch (NullPointerException nu){
+            nu.printStackTrace();
+            System.out.println("NullPointer");
+        }
 
         String text = "";
         try {
             text = fileHandler.readURLFile(bufferedReader);
         } catch (NullPointerException nullPoint) {
-            System.out.println("Catch works");
+            System.out.println("No URL file found");
         }
         dynamicGameBoard.clearCellState();
         graphicsDisplayDynamicBoard.clearDrawing(dynamicGameBoard, gc);
@@ -388,9 +398,14 @@ public class Controller implements Initializable {
 
     public void onOpenRLEFile() throws Exception {
 
+        alert = new Alert(Alert.AlertType.WARNING);
+        alert.setContentText("No file selected");
+
         try {
             FileHandler fileHandler = new FileHandler();
             fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("RLE Files (*.rle)", "*.rle");
+            fileChooser.getExtensionFilters().add(filter);
             RLEFormatFile = fileChooser.showOpenDialog(null);
 
 
@@ -410,6 +425,7 @@ public class Controller implements Initializable {
             }
         } catch (NullPointerException np) {
             System.out.println("No file selected");
+            alert.show();
 
         }
     }

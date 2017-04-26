@@ -58,7 +58,7 @@ public class AudioPlaySound implements LineListener {
         clip.open(audioInputStream);
 
         floatVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        floatVolume.setValue(-20.0f);
+        floatVolume.setValue(-25.0f);
 
 
     }
