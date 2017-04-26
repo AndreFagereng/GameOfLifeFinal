@@ -1,6 +1,8 @@
 package model;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import javax.sound.sampled.Clip;
 import javax.swing.*;
@@ -67,6 +70,7 @@ public class Controller implements Initializable {
     DynamicGameBoard dynamicGameBoard;
     GraphicsDisplayDynamicBoard graphicsDisplayDynamicBoard;
     AudioPlaySound audioPlaySound;
+    Timeline timeline;
 
 
     @Override
@@ -110,6 +114,19 @@ public class Controller implements Initializable {
 */
         showGenerationText();
         showAliveCellsText();
+
+
+        timeLineMethod();
+    }
+    public void timeLineMethod(){
+
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(1000));
+
+        timeline = new Timeline(keyFrame);
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.setAutoReverse(true);
+
+        timeline.play();
     }
 
     public void onMuteSound(){

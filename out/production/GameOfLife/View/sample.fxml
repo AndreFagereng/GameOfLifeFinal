@@ -13,9 +13,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="model.Controller">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="model.Controller">
     <children>
-        <MenuBar prefHeight="32.0" prefWidth="887.0">
+        <MenuBar prefHeight="32.0" prefWidth="946.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
@@ -53,7 +53,7 @@
             </font>
         </Text>
         <ChoiceBox fx:id="choicePattern" layoutX="181.0" layoutY="44.0" prefHeight="31.0" prefWidth="100.0" />
-        <Text fx:id="showGen" layoutX="718.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="53.0">
+        <Text fx:id="showGen" layoutX="874.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="53.0">
             <font>
                 <Font name="SimSun" size="16.0" />
             </font>
@@ -84,9 +84,9 @@
             <font>
                 <Font size="20.0" />
             </font></Text>
-        <Canvas fx:id="canvas" accessibleRole="SLIDER" height="460.0" layoutX="30.0" layoutY="95.0" width="800.0" />
+        <Canvas fx:id="canvas" accessibleRole="SLIDER" height="460.0" layoutX="25.0" layoutY="90.0" width="800.0" />
         <ColorPicker fx:id="colorPicker" layoutX="425.0" layoutY="41.0" prefHeight="38.0" prefWidth="127.0" promptText="asd" />
-        <Text layoutX="677.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GEN:" wrappingWidth="32.0">
+        <Text layoutX="833.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GEN:" wrappingWidth="32.0">
             <font>
                 <Font name="SimSun" size="16.0" />
             </font>
@@ -96,12 +96,26 @@
               <Font name="SimSun" size="18.0" />
            </font>
         </Button>-->
-        <Button fx:id="nextGeneration" layoutX="203.0" layoutY="578.0" mnemonicParsing="false" onAction="#nextGenDyn" prefHeight="50.0" prefWidth="127.0" text="Step">
+        <Button fx:id="nextGeneration" layoutX="203.0" layoutY="578.0" mnemonicParsing="false" onAction="#onNextGenStep" prefHeight="50.0" prefWidth="127.0" text="Step">
             <font>
                 <Font name="SimSun" size="18.0" />
             </font>
         </Button>
       <CheckBox fx:id="checkBoxSound" layoutX="852.0" layoutY="95.0" mnemonicParsing="false" onAction="#onMuteSound" text="Sound" />
-      <Slider fx:id="volumeSlider" blockIncrement="1.0" layoutX="852.0" layoutY="138.0" max="1.0" min="-1.0" orientation="VERTICAL" value="0.5" />
+      <Text layoutX="833.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FPS:" wrappingWidth="32.0">
+         <font>
+            <Font name="SimSun" size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="831.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ALIVE:" wrappingWidth="53.00001502037048">
+         <font>
+            <Font name="SimSun" size="16.0" />
+         </font>
+      </Text>
+      <Text fx:id="showAliveCells" layoutX="886.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="42.97070622444153">
+         <font>
+            <Font name="SimSun" size="16.0" />
+         </font>
+      </Text>
     </children>
 </Pane>
