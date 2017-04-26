@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">Game Of Life Android</string>
-    <string name="convert_to_qr_code">CONVERT TO QR CODE</string>
-    <string name="type_in_any_string">Please enter anything!</string>
-    <string name="start_game">START GAME</string>
-    <string name="capture_qr_code">CAPTURE QR CODE</string>
-</resources>
