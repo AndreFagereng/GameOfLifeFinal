@@ -53,7 +53,7 @@
                 <Font name="SimSun" size="18.0" />
             </font>
         </Text>
-        <ChoiceBox fx:id="choicePattern" layoutX="181.0" layoutY="44.0" prefHeight="31.0" prefWidth="100.0" />
+        <ChoiceBox fx:id="choicePattern" layoutX="181.0" layoutY="44.0" prefHeight="31.0" prefWidth="150.0" />
         <Text fx:id="showGen" layoutX="874.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="53.0">
             <font>
                 <Font name="SimSun" size="16.0" />
