@@ -86,7 +86,7 @@
                 <Font size="20.0" />
             </font></Text>
         <ScrollPane fx:id="scrollpane" layoutX="25.0" layoutY="90.0">
-        <Canvas fx:id="canvas" accessibleRole="SLIDER" height="460.0" layoutX="25.0" layoutY="90.0" width="800.0" />
+        <Canvas fx:id="canvas" accessibleRole="SLIDER" height="460.0" layoutX="25.0" layoutY="90.0" width="800.0"/>
         </ScrollPane>
         <ColorPicker fx:id="colorPicker" layoutX="425.0" layoutY="41.0" prefHeight="38.0" prefWidth="127.0" promptText="asd" />
         <Text layoutX="833.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GEN:" wrappingWidth="32.0">
