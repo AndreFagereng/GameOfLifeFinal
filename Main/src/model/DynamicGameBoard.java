@@ -109,8 +109,23 @@ public class DynamicGameBoard {
 
 
     public void setCellState(int x, int y, boolean state){
-
        cellArrayList.get(x).get(y).setArrayState(state);
+        while(cellArrayList.size() < x || cellArrayList.size() < y){
+            extendBoard();
+        }
+    }
+
+    private void extendBoard() {
+
+        ArrayList<Cell> newTempArray = new ArrayList<>(cellArrayList.size() + 1);
+        cellArrayList.add(new ArrayList<>(newTempArray));
+
+        IntStream.range(cellArrayList.size(), cellArrayList.size() + 1).forEach(p -> {
+            tempArray.clear();
+            IntStream.range(cellArrayList.size(), cellArrayList.size() + 1).forEach(e -> tempArray.add(new Cell(false)));
+            cellArrayList.add(new ArrayList<>(tempArray));
+
+        });
 
     }
 
