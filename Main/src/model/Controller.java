@@ -18,6 +18,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -36,6 +37,8 @@ import static model.GraphicsDisplayBoard.newPattern;
 
 public class Controller implements Initializable {
 
+    @FXML
+    ScrollPane scrollPane;
     @FXML
     Canvas canvas;
     @FXML
@@ -96,12 +99,16 @@ public class Controller implements Initializable {
         zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+
+
                 canvas.setScaleX(newValue.doubleValue() / 10);
                 canvas.setScaleY(newValue.doubleValue() / 10);
+
             }
         });
 
-        gc.scale(canvas.getScaleX(), canvas.getScaleY());
+
+        //gc.scale(canvas.getScaleX(), canvas.getScaleY());
 
 
      /*   board = new Board(canvas);
@@ -118,6 +125,8 @@ public class Controller implements Initializable {
 
         timeLineMethod();
     }
+
+
     public void timeLineMethod(){
 
         KeyFrame keyFrame = new KeyFrame(Duration.millis(1000));
