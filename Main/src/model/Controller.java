@@ -100,8 +100,19 @@ public class Controller implements Initializable {
 
 
         graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, aliveCellColor);
+        zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-        zoomSlider.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
+
+                canvas.setScaleX(newValue.doubleValue() / 10);
+                canvas.setScaleY(newValue.doubleValue() / 10);
+
+            }
+        });
+
+
+       /* zoomSlider.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 canvas.setScaleX(100);
@@ -111,7 +122,7 @@ public class Controller implements Initializable {
 
                // canvas.setScaleY(zoomSlider.getValue());
             }
-        });
+        });*/
 
      /*   canvas.setOnScroll((ScrollEvent event) -> {
 

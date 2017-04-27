@@ -63,11 +63,15 @@ public class AudioPlaySound implements LineListener {
 
     }
 
-    public void setFloatVolume(Float volume){
+    public void setFloatVolume(Float volume)
+    {
         floatVolume.setValue(volume);
+
+
     }
 
     int lastFrame = 0;
+
 
     public void resume() {
 
