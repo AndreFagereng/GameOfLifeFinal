@@ -19,6 +19,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -94,11 +95,10 @@ public class Controller implements Initializable {
         gc = canvas.getGraphicsContext2D();
         audioPlaySound = new AudioPlaySound();
 
-        dynamicGameBoard = new DynamicGameBoard(80, 80, false);
+        dynamicGameBoard = new DynamicGameBoard(100, 100, false);
         graphicsDisplayDynamicBoard = new GraphicsDisplayDynamicBoard();
 
-        //canvas.setScaleX(50);
-       // canvas.setScaleY(50);
+
         graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, aliveCellColor);
 
         zoomSlider.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
@@ -113,19 +113,26 @@ public class Controller implements Initializable {
             }
         });
 
-       /* zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+     /*   canvas.setOnScroll((ScrollEvent event) -> {
 
-                //canvas.setScaleX(newValue.doubleValue() / 10);
-                //canvas.setScaleY(newValue.doubleValue() / 10);
-                gc.scale(zoomSlider.getValue() , zoomSlider.getValue());
-                System.out.println(zoomSlider.getValue());
-
+            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            // Adjust the zoom factor as per your requirement
+            double zoomFactor = 1.05;
+            double deltaY = event.getDeltaY();
+            if (deltaY < 0){
+                zoomFactor = 2.0 - zoomFactor;
             }
-        });*/
 
 
+            double cameraZoomFactor = zoomFactor;
+
+            gc.translate(300, 300);
+            gc.scale(cameraZoomFactor, cameraZoomFactor);
+            gc.translate(-300,-300);
+
+
+        });
+       */
      /*   board = new Board(canvas);
         gdb = new GraphicsDisplayBoard(gc, canvas);
 
@@ -289,13 +296,13 @@ public class Controller implements Initializable {
                 dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(false);
 
                 gc.setFill(Color.WHITE);
-                gc.fillRect(x * graphicsDisplayDynamicBoard.cellSize, y * graphicsDisplayDynamicBoard.cellSize, 9, 9);
+                gc.fillRect(x * graphicsDisplayDynamicBoard.cellSize, y * graphicsDisplayDynamicBoard.cellSize, graphicsDisplayDynamicBoard.getCellSize(),graphicsDisplayDynamicBoard.getCellSize());
 
             } else {
                 dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(true);
 
                 gc.setFill(colorPicker.getValue());
-                gc.fillRect(x * graphicsDisplayDynamicBoard.cellSize, y * graphicsDisplayDynamicBoard.cellSize, 9, 9);
+                gc.fillRect(x * graphicsDisplayDynamicBoard.cellSize, y * graphicsDisplayDynamicBoard.cellSize, graphicsDisplayDynamicBoard.getCellSize(),graphicsDisplayDynamicBoard.getCellSize());
 
 
             }
