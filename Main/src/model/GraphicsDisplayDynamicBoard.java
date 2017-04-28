@@ -1,5 +1,6 @@
 package model;
 
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -30,6 +31,7 @@ public class GraphicsDisplayDynamicBoard extends Controller{
             }
         }
     }
+
 
     public void clearDrawing(DynamicGameBoard dynamicGameBoard, GraphicsContext gc){
         for (int x = 0; x < dynamicGameBoard.cellArrayList.size(); x++) {

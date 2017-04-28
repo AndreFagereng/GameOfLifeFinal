@@ -1,5 +1,9 @@
 package model;
 
+import javafx.scene.canvas.*;
+import javafx.scene.canvas.Canvas;
+
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -70,13 +74,16 @@ public class FileHandler {
 
     public void readStringToBoard(String RLEText, DynamicGameBoard dynamicGameBoard){
 
+        int offsetY = 15;
+        int offsetX = 30;
+
         for(int i = 0; i < RLEText.length(); i++){
             if(RLEText.charAt(i) == 'o'){
-                dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(true);
+                dynamicGameBoard.cellArrayList.get(x+offsetX).get(y+offsetY).setArrayState(true);
                 x++;
             }
             if(RLEText.charAt(i) == 'b'){
-                dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(false);
+                dynamicGameBoard.cellArrayList.get(x+offsetX).get(y+offsetY).setArrayState(false);
                 x++;
             }
             if(RLEText.charAt(i) == '$'){

@@ -451,20 +451,20 @@ public class Controller implements Initializable {
                 fileHandler.readOpenFile(RLEFormatFile);
                 dynamicGameBoard.clearCellState();
                 graphicsDisplayDynamicBoard.clearDrawing(dynamicGameBoard, gc);
+                fileHandler.readStringToBoard(fileHandler.readOpenFile(RLEFormatFile), dynamicGameBoard);
+                graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, colorPicker.getValue());
             } else {
                 System.out.println("Something wrong with file");
             }
 
             try {
-                fileHandler.readStringToBoard(fileHandler.readOpenFile(RLEFormatFile), dynamicGameBoard);
-                graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, colorPicker.getValue());
+
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("ArrayOutOfBound");
             }
         } catch (NullPointerException np) {
             alert.show();
             System.out.println("No file selected");
-
         }
     }
 
