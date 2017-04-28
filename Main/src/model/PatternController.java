@@ -24,19 +24,21 @@ public class PatternController implements Initializable {
 
     FileChooser fileChooser;
     File saveFile;
-    Controller controller;
-
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        textAreaPattern.setText("#N Change Name here\n" +
-                "#C \n" +
-                "#C Write RLE format below\n"
+        textAreaPattern.setText(
+                "#N \"Patteren name (e.g: CooperMachine) \" \n" +
+                "#O \"Creators name (e.g: Sheldon Cooper)\"\n" +
+                "#C \"Description   (e.g: I made this!)\"\n" +
+                "#C \"Description   (e.g: Find more @ www.example.com/samples)\" \n" +
+                "x = \"writeXsize\" , y = \"writeYsize\", rule = b3/s23 \n" +
+                "\"REPLACE AND WRITE RLE CODE HERE\""
+
 
         );
     }
+
 
 
 
@@ -54,8 +56,16 @@ public class PatternController implements Initializable {
         saveFile = fileChooser.showSaveDialog(null);
 
         textIntoRle = textAreaPattern.getText();
+
+        runLengthEncoding.append(textAreaPattern.getText());
+
         textIntoRle += "!";
+
         for (int i = 0; i < textAreaPattern.getText().length(); i++) {
+
+            if(textIntoRle.trim().indexOf("#") == 0)
+                continue;
+
             if (textIntoRle.charAt(i) == 'b') {
                 amountOfB++;
                 if (textIntoRle.charAt(i+1) != 'b') {
@@ -94,6 +104,7 @@ public class PatternController implements Initializable {
                 continue;
             }
         }
+        System.out.println(runLengthEncoding);
 
         if (runLengthEncoding.charAt(runLengthEncoding.length()-1) != '!') {
             runLengthEncoding.append('!');

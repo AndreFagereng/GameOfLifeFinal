@@ -24,7 +24,6 @@ public class DynamicGameBoard {
     ArrayList<Cell> tempArray;
     ArrayList<Cell> copyTempArray;
     Cell cell;
-    GraphicsDisplayDynamicBoard graphicsDisplayDynamicBoard;
     protected IntegerProperty generation = new SimpleIntegerProperty(this, "generation");
     protected IntegerProperty cellsAlive = new SimpleIntegerProperty(this, "cellsAlive");
 
@@ -38,10 +37,8 @@ public class DynamicGameBoard {
         tempArray = new ArrayList<>();
         cell = new Cell(state);
 
-        graphicsDisplayDynamicBoard = new GraphicsDisplayDynamicBoard();
 
 
-        //IntStream.range(0,width).forEach(p-> tempArray.add(new Cell(state)));
         IntStream.range(0, height).forEach(p -> {
             tempArray.clear();
             IntStream.range(0, width).forEach(e -> tempArray.add(new Cell(state)));
@@ -60,67 +57,50 @@ public class DynamicGameBoard {
     }
 
 
-    public void randomizeStates(ArrayList<ArrayList<Cell>> cellArrayList) {
-
-
-
-
-        /*boolean state = !cellArrayList.get(0).get(0).getArrayState();
-        for (ArrayList<Cell> array : cellArrayList) {
-            for (Cell anArray : array) {
-                if (Math.random() < 0.6) {
-                    anArray.setArrayState(state);
-                }
-            }
-        }*/
-
-    }
-
-
-    public void initializeDynamicBoard() {
-        randomizeStates(cellArrayList);
-
-    }
-
     public void onNextGen() {
-
-
         collisionChecker();
-        System.out.println(cellArrayList.size());
         cellsAlive.set(0);
+        System.out.println(cellArrayList.size());
         checkNeighbours(cellArrayList, tempArray);
         copyArrayList();
 
 
     }
 
-    public void clearCellState() {
+    public void clearCellState(){
+        for (ArrayList<Cell> subArray : cellArrayList ) {
+            subArray.stream().filter(Cell::getArrayState).forEach(cell -> cell.setArrayState(false));
+        }
+    }
+
+    //Old code
+   /* public void clearCellState() {
         for (int x = 0; x < cellArrayList.size(); x++) {
             for (int y = 0; y < tempArray.size(); y++) {
                 cellArrayList.get(x).get(y).setArrayState(false);
             }
         }
+    }*/
+
+
+    public void setCellState(int x, int y, boolean state) {
+        cellArrayList.get(x).get(y).setArrayState(state);
     }
 
+    private void collisionChecker() {
 
-    public void setCellState(int x, int y, boolean state){
-       cellArrayList.get(x).get(y).setArrayState(state);
-    }
-
-    private void collisionChecker () {
-
-        for(int i = 0; i < cellArrayList.size(); i++){
-            if(cellArrayList.get(cellArrayList.size()-2).get(i).getArrayState()){
+        for (int i = 0; i < cellArrayList.size(); i++) {
+            if (cellArrayList.get(cellArrayList.size() - 2).get(i).getArrayState()) {
                 extendBoardDownRight();
 
-            }else if(cellArrayList.get(i).get(cellArrayList.size()-2).getArrayState()){
+            } else if (cellArrayList.get(i).get(cellArrayList.size() - 2).getArrayState()) {
                 extendBoardDownRight();
 
-            }else if(cellArrayList.get(0).get(i).getArrayState()){
-               // extendBoardUpLeft();
+            } else if (cellArrayList.get(0).get(i).getArrayState()) {
+                // extendBoardUpLeft();
 
-            }else if(cellArrayList.get(i).get(0).getArrayState()){
-               //extendBoardUpLeft();
+            } else if (cellArrayList.get(i).get(0).getArrayState()) {
+                //extendBoardUpLeft();
 
             }
         }
@@ -128,8 +108,7 @@ public class DynamicGameBoard {
     }
 
 
-
-    public void extendBoardUpLeft(){
+    public void extendBoardUpLeft() {
         tempArray = new ArrayList<>();
         copyTempArray = new ArrayList<>();
 
@@ -176,9 +155,8 @@ public class DynamicGameBoard {
 
     }
 
-    public void setCopyState(int x, int y, boolean state){
+    public void setCopyState(int x, int y, boolean state) {
         copyArrayList.get(x).get(y).setCopyArrayState(state);
-
     }
 
     public void copyArrayList() {
@@ -189,7 +167,6 @@ public class DynamicGameBoard {
                     cellsAlive.set(cellsAlive.get() + 1);
                 } else {
                     setCellState(x, y, false);
-
                 }
             }
         }
@@ -231,7 +208,8 @@ public class DynamicGameBoard {
                     setCopyState(x, y, cellArrayList.get(x).get(y).getArrayState());
                     // lives if 3 neighbours
                 } else if (neighbour == 3) {
-                    setCopyState(x, y, true);;
+                    setCopyState(x, y, true);
+                    ;
                 }
 
                 //System.out.print(neighbour + " ");

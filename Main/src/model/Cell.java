@@ -5,28 +5,12 @@ package model;
  */
 public class Cell {
 
-    private boolean cellState = false;
-    private boolean newCellState = false;
-
     private boolean listCellState = false;
     private boolean copyListCellState = false;
-
-    public Cell(int cellHeight, int cellWidth, boolean cellState){
-        this.cellState = cellState;
-    }
 
     public Cell(boolean state){
         this.listCellState = state;
     }
-
-
-    public boolean getState(){
-        return cellState;
-    }
-    public boolean getNewState(){
-        return newCellState;
-    }
-
 
 
     public boolean getArrayState(){ return listCellState;}
@@ -35,6 +19,15 @@ public class Cell {
     public void setArrayState(boolean listCellState){this.listCellState = listCellState;}
     public void setCopyArrayState(boolean copyListCellState){this.copyListCellState = copyListCellState;}
 
+
+    private boolean cellState = false;
+    private boolean newCellState = false;
+
+
+    public Cell(int cellHeight, int cellWidth, boolean cellState){
+        this.cellState = cellState;
+    }
+
     public void setState(boolean state){
        this.cellState = state;
     }
@@ -42,5 +35,10 @@ public class Cell {
        this.newCellState = newCellState;
     }
 
-
+    public boolean getState(){
+        return cellState;
+    }
+    public boolean getNewState(){
+        return newCellState;
+    }
 }

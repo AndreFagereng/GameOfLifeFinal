@@ -21,11 +21,12 @@ public class AudioPlaySound implements LineListener {
     DataLine.Info info;
     Clip clip;
     private FloatControl floatVolume;
+    int lastFrame = 0;
 
     public AudioPlaySound() {
 
         try {
-            if(file != null) {
+            if (file != null) {
                 loadAudioFile(file);
                 System.out.println("Sound File Loaded");
             }
@@ -43,7 +44,7 @@ public class AudioPlaySound implements LineListener {
     }
 
     protected void loadAudioFile(File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
-        try{
+        try {
 
             audioInputStream = AudioSystem.getAudioInputStream(file);
             audioFormat = audioInputStream.getFormat();
@@ -51,7 +52,7 @@ public class AudioPlaySound implements LineListener {
             clip = AudioSystem.getClip();
 
 
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.out.println("Illegal Arguemnt");
         }
 
@@ -59,19 +60,7 @@ public class AudioPlaySound implements LineListener {
 
         floatVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         floatVolume.setValue(-25.0f);
-
-
     }
-
-    public void setFloatVolume(Float volume)
-    {
-        floatVolume.setValue(volume);
-
-
-    }
-
-    int lastFrame = 0;
-
 
     public void resume() {
 

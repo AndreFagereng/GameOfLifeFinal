@@ -257,6 +257,7 @@ public class Controller implements Initializable {
     }*/
 
     public void onStop() {
+        startPauseBtn.setText("Start");
         timer.stop();
     }
 
@@ -386,20 +387,22 @@ public class Controller implements Initializable {
 
 
     public void createPattern() throws Exception {
+        onStop();
         Parent root = FXMLLoader.load(getClass().getResource("../View/createOwnPattern.fxml"));
         stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.setTitle("Patterns");
         stage.show();
+
+
+
     }
 
     public void onReadURLFile() throws Exception {
 
-        alert= new Alert(Alert.AlertType.WARNING);
-        alert.setContentText("No URL entered or wrong file");
-
         FileHandler fileHandler = new FileHandler();
+        onStop();
 
         try {
             String urlPath = JOptionPane.showInputDialog("Paste URL");
@@ -429,9 +432,12 @@ public class Controller implements Initializable {
     }
 
     public void onOpenRLEFile() throws Exception {
-
         alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText("Error occurred");
         alert.setContentText("No file selected");
+
+
+        onStop();
 
         try {
             FileHandler fileHandler = new FileHandler();
@@ -456,8 +462,8 @@ public class Controller implements Initializable {
                 System.out.println("ArrayOutOfBound");
             }
         } catch (NullPointerException np) {
-            System.out.println("No file selected");
             alert.show();
+            System.out.println("No file selected");
 
         }
     }

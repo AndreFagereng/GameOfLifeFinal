@@ -14,11 +14,6 @@ public class GraphicsDisplayDynamicBoard extends Controller{
 
     }
 
-    public int getCellSize(){
-        return cellSize;
-    }
-
-
     public void drawNextGen(DynamicGameBoard dynamicGameBoard, GraphicsContext gc, Color color){
 
 
@@ -46,5 +41,16 @@ public class GraphicsDisplayDynamicBoard extends Controller{
             }
         }
     }
+
+
+    public int getCellSize(){
+        return cellSize;
+    }
+
+    public void setCellSize(int cellSize){
+        this.cellSize = cellSize;
+    }
+
+
 
 }
