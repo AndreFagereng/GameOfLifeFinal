@@ -1,4 +1,4 @@
-package model;
+package controller;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -7,7 +7,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,17 +18,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.*;
 
-import javax.sound.sampled.Clip;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -388,7 +384,7 @@ public class Controller implements Initializable {
 
     public void createPattern() throws Exception {
         onStop();
-        Parent root = FXMLLoader.load(getClass().getResource("../View/createOwnPattern.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../view/createOwnPattern.fxml"));
         stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setResizable(false);

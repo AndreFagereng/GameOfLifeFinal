@@ -1,15 +1,15 @@
 package model;
 
-import javafx.scene.canvas.Canvas;
+import controller.Controller;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
  * Created by Andre on 24.04.2017.
  */
-public class GraphicsDisplayDynamicBoard extends Controller{
+public class GraphicsDisplayDynamicBoard extends Controller {
 
-    int cellSize = 10;
+    public int cellSize = 10;
 
     public GraphicsDisplayDynamicBoard(){
 

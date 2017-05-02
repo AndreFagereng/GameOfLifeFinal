@@ -4,14 +4,8 @@ package model;
  * Created by Andre on 18.04.2017.
  */
 public class Patterns {
-    protected static int[][] glider;
-    protected static int[][] exploder;
-    protected static int[][] painting;
-    protected static int[][] smallExploder;
-    protected static int[][] penta;
-    protected static int[][] bunny;
-    protected static int[][] geysir;
-
+    public static int[][] glider, exploder, painting, smallExploder, penta, bunny, geysir;
+    
     static{
         glider = new int[][] {{0,0,1},{1,0,1},{0,1,1}};
 

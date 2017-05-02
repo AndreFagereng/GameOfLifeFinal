@@ -18,14 +18,14 @@ import java.util.stream.IntStream;
  */
 public class DynamicGameBoard {
 
-    ArrayList<ArrayList<Cell>> cellArrayList;
+    public ArrayList<ArrayList<Cell>> cellArrayList;
     ArrayList<ArrayList<Cell>> copyArrayList;
 
     ArrayList<Cell> tempArray;
     ArrayList<Cell> copyTempArray;
     Cell cell;
-    protected IntegerProperty generation = new SimpleIntegerProperty(this, "generation");
-    protected IntegerProperty cellsAlive = new SimpleIntegerProperty(this, "cellsAlive");
+    public IntegerProperty generation = new SimpleIntegerProperty(this, "generation");
+    public IntegerProperty cellsAlive = new SimpleIntegerProperty(this, "cellsAlive");
 
 
     public DynamicGameBoard(int width, int height, boolean state) {
@@ -220,7 +220,7 @@ public class DynamicGameBoard {
 
     }
 
-    protected boolean checkCellAlive(int x, int y) {
+    public boolean checkCellAlive(int x, int y) {
         return !(x == -1 || y == -1 || x == cellArrayList.size() || y == cellArrayList.size()) && cellArrayList.get(x).get(y).getArrayState();
     }
 
