@@ -57,7 +57,6 @@ public class Controller implements Initializable {
     CheckBox checkBoxSound;
 
 
-
     //Controller class
 
     private Board board;
@@ -148,49 +147,50 @@ public class Controller implements Initializable {
         timerMethod();
         onChangeColor();
 */
-        showText(showGen,dynamicGameBoard.generation);
+        showText(showGen, dynamicGameBoard.generation);
         showText(showAliveCells, dynamicGameBoard.cellsAlive);
-
-        timeLineMethod();
-
-
     }
 
-
-    public void timeLineMethod(){
-
-
-
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(1000));
-
-        timeline = new Timeline(keyFrame);
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.setAutoReverse(true);
-
-        timeline.play();
-    }
-
-    public void onMuteSound(){
-        if(!checkBoxSound.isSelected()) {
+    /**
+     * Method mutes and un-mutes Audio clip.
+     */
+    
+    public void onMuteSound() {
+        if (!checkBoxSound.isSelected()) {
             audioPlaySound.pause();
             System.out.println("Pause");
-        }else if(checkBoxSound.isSelected()){
+        } else if (checkBoxSound.isSelected()) {
             audioPlaySound.resume();
             System.out.println("Resume");
         }
     }
+
+    /**
+     * Method uses two methods to run the game.
+     * One controls the ArrayLists,
+     * one controls the drawing methods.
+     */
 
     public void nextGenDyn() {
         dynamicGameBoard.onNextGen();
         graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, aliveCellColor);
     }
 
-    public void onNextGenStep(){
+    /**
+     * Method step into the next generation of the game
+     */
+
+    public void onNextGenStep() {
         timer.stop();
         startPauseBtn.setText("Start");
         nextGenDyn();
         dynamicGameBoard.generation.set(dynamicGameBoard.generation.get() + 1);
     }
+
+    /**
+     * This method is used for the ChoiceBox in the game.
+     * Automatically uses the last Pattern as default.
+     */
 
     private void onPatternDraw() {
         choicePattern.getItems().addAll(PatternType.values());
@@ -198,23 +198,29 @@ public class Controller implements Initializable {
         choicePattern.getSelectionModel().selectLast();
     }
 
+    /**
+     * Method binds a text with a IntegerProperty
+     */
+
     private void showText(Text text, IntegerProperty integerProperty) {
         text.textProperty().bind(Bindings.concat(integerProperty));
     }
+
+    /**
+     * Method clears a IntegerProperty and sets it to 0.
+     *
+     * @param integerProperty Clear the used IntegerProperty.
+     */
 
     private void clearText(IntegerProperty integerProperty) {
         integerProperty.setValue(0);
     }
 
 
-    /*private void showGenerationText() {
-        showGen.textProperty().bind(Bindings.concat(board.generation));
-    }
-
-    private void clearGenerationText() {
-        board.generation.set(0);
-    }*/
-
+    /**
+     * Method is used as timer for the Game.
+     * Commented code is old code.
+     */
     public void timerMethod() {
         speed = 0;
         timer = new AnimationTimer() {
@@ -222,18 +228,22 @@ public class Controller implements Initializable {
             public void handle(long now) {
                 speed++;
                 if (speed > Math.abs((int) speedSlider.getValue())) {
-                    /*gdb.updateBoard(gc);
-                    gdb.drawNextGen(gc, aliveCellColor, board);*/
                     nextGenDyn();
                     speed = 0;
                     dynamicGameBoard.generation.set(dynamicGameBoard.generation.get() + 1);
-                    //board.generation.set(board.generation.get() + 1);
+
+                    /*gdb.updateBoard(gc);
+                    gdb.drawNextGen(gc, aliveCellColor, board);
+                    board.generation.set(board.generation.get() + 1);*/
                 }
             }
         };
     }
 
-
+    /**
+     * Method used for Clear button.
+     * Clears all living cells.
+     */
 
     public void onClear() {
         dynamicGameBoard.clearCellState();
@@ -244,21 +254,22 @@ public class Controller implements Initializable {
         clearText(dynamicGameBoard.generation);
     }
 
-    /*public void onClear() {
-        board.clearCellState();
-        gdb.clearBoard(gc);
-        startPauseBtn.setText("Start");
-        timer.stop();
-        clearGenerationText();
-    }*/
+    /**
+     * Method used for Start/Stop button.
+     * Stops the timer for Game of Life.
+     */
 
     public void onStop() {
         startPauseBtn.setText("Start");
         timer.stop();
     }
 
-    public void onStart() {
+    /**
+     * Method used for Start/Stop button.
+     * Starts the timer for Game of Life.
+     */
 
+    public void onStart() {
         if (startPauseBtn.getText().equals("Start")) {
             startPauseBtn.setText("Pause");
             timer.start();
@@ -268,14 +279,11 @@ public class Controller implements Initializable {
         }
     }
 
-    /*public void nextGen() {
-        timer.stop();
-        startPauseBtn.setText("Start");
-        gdb.updateBoard(gc);
-        gdb.drawNextGen(gc, aliveCellColor, board);
-        board.generation.set(board.generation.get() + 1);
-    }*/
 
+
+    /**
+     * Method used for ColorPicker in UI.
+     */
     private void onChangeColor() {
         colorPicker.setOnAction(e -> {
             aliveCellColor = colorPicker.getValue();
@@ -284,12 +292,10 @@ public class Controller implements Initializable {
     }
 
 
-  /*  private void onChangeColor() {
-        colorPicker.setOnAction(e -> {
-            aliveCellColor = colorPicker.getValue();
-            gdb.drawNextGen(gc, aliveCellColor, board);
-        });
-    }*/
+    /**
+     * EventHandler method for drawing on the canvas with simple
+     * mouse clicks.
+     */
 
     private EventHandler onClickCellEvent = new EventHandler() {
         @Override
@@ -304,43 +310,24 @@ public class Controller implements Initializable {
                 dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(false);
 
                 gc.setFill(Color.WHITE);
-                gc.fillRect(x * graphicsDisplayDynamicBoard.cellSize, y * graphicsDisplayDynamicBoard.cellSize, graphicsDisplayDynamicBoard.getCellSize(),graphicsDisplayDynamicBoard.getCellSize());
+                gc.fillRect(x * graphicsDisplayDynamicBoard.cellSize, y * graphicsDisplayDynamicBoard.cellSize, graphicsDisplayDynamicBoard.getCellSize(), graphicsDisplayDynamicBoard.getCellSize());
 
             } else {
                 dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(true);
 
                 gc.setFill(colorPicker.getValue());
-                gc.fillRect(x * graphicsDisplayDynamicBoard.cellSize, y * graphicsDisplayDynamicBoard.cellSize, graphicsDisplayDynamicBoard.getCellSize(),graphicsDisplayDynamicBoard.getCellSize());
+                gc.fillRect(x * graphicsDisplayDynamicBoard.cellSize, y * graphicsDisplayDynamicBoard.cellSize, graphicsDisplayDynamicBoard.getCellSize(), graphicsDisplayDynamicBoard.getCellSize());
 
 
             }
         }
     };
 
-    /*private EventHandler onClickCellEvent = new EventHandler() {
-        @Override
-        public void handle(Event event) {
-            int x = getXPosition(event);
-            int y = getYPosition(event);
 
-            if (x == -1 || y == -1 || x == board.gridWidth || y == board.gridHeight) {
-                throw new ArrayIndexOutOfBoundsException();
-            }
-            if (gdb.cellGrid[x][y].getState()) {
-                gdb.cellGrid[x][y].setState(false);
-
-                gc.setFill(Color.LIGHTGREY);
-                gc.fillRect(x * board.cellWidth, y * board.cellHeight, board.cellHeight - 1, board.cellWidth - 1);
-
-            } else if (!gdb.cellGrid[x][y].getState()) {
-                gdb.cellGrid[x][y].setState(true);
-                gc.setFill(aliveCellColor);
-                gc.fillRect(x * board.cellWidth, y * board.cellHeight, board.cellHeight - 1, board.cellWidth - 1);
-
-
-            }
-        }
-    };*/
+    /**
+     * EventHandler method for drawing on the canvas with
+     * a mouse dragged event.
+     */
 
     public EventHandler onDragCellEvent = new EventHandler() {
         @Override
@@ -348,6 +335,9 @@ public class Controller implements Initializable {
             int x = getXPosition(event);
             int y = getYPosition(event);
             try {
+                if (x == -1 || y == -1 || x == canvas.getHeight() / 10 || y == canvas.getWidth() / 10) {
+                    throw new ArrayIndexOutOfBoundsException();
+                }
                 if (!dynamicGameBoard.checkCellAlive(x, y)) {
                     dynamicGameBoard.cellArrayList.get(x).get(y).setArrayState(true);
 
@@ -362,26 +352,15 @@ public class Controller implements Initializable {
         }
     };
 
-    /*public EventHandler onDragCellEvent = new EventHandler() {
-        @Override
-        public void handle(Event event) {
-            int x = getXPosition(event);
-            int y = getYPosition(event);
-            try {
-                if (!gdb.cellGrid[x][y].getState()) {
-                    gdb.cellGrid[x][y].setState(true);
-
-                    gc.setFill(aliveCellColor);
-                    gc.fillRect(x * board.cellWidth, y * board.cellHeight, board.cellHeight - 1, board.cellWidth - 1);
-
-                }
-            } catch (ArrayIndexOutOfBoundsException ae) {
-
-            }
-        }
-    };*/
 
 
+
+    /**
+     * Method stops the current Game and loads a new stage
+     * with Create Pattern, Open Pattern, Open URL Pattern methods.
+     *
+     * @throws Exception Throws any Exceptions.
+     */
     public void createPattern() throws Exception {
         onStop();
         Parent root = FXMLLoader.load(getClass().getResource("../view/createOwnPattern.fxml"));
@@ -392,8 +371,14 @@ public class Controller implements Initializable {
         stage.show();
 
 
-
     }
+
+    /**
+     * Method is used to open a .rle file. Uses methods from
+     * FileHandler to read and draw a file to the DynamicGameBoard
+     *
+     * @throws Exception Throws any exceptions.
+     */
 
     public void onReadURLFile() throws Exception {
 
@@ -406,10 +391,10 @@ public class Controller implements Initializable {
             URLConnection conn = url.openConnection();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
-        }catch (MalformedURLException mal){
+        } catch (MalformedURLException mal) {
             System.out.println("Wrong URLPath");
             alert.show();
-        }catch (NullPointerException nu){
+        } catch (NullPointerException nu) {
             nu.printStackTrace();
             System.out.println("NullPointer");
         }
@@ -426,6 +411,14 @@ public class Controller implements Initializable {
         graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, colorPicker.getValue());
 
     }
+
+    /**
+     * Method is used to open a .rle file. Uses methods from
+     * FileHandler to read and draw a file to the DynamicGameBoard
+     *
+     * @throws Exception Throws any exceptions.
+     */
+
 
     public void onOpenRLEFile() throws Exception {
         alert = new Alert(Alert.AlertType.WARNING);
@@ -464,7 +457,204 @@ public class Controller implements Initializable {
         }
     }
 
-    /*public void onReadURLFile() throws Exception  {
+
+    /**
+     *
+     * Enum with different static patterns to be used in game.
+     *
+     */
+
+    private enum PatternType {
+        Glider("Glider", glider),
+        Exploder("Exploder", exploder),
+        Painting("Painting", painting),
+        Draw("Draw your own", new int[][]{});
+
+        private int[][] pattern;
+        private String displayName;
+
+
+        PatternType(String d, int[][] p) {
+            pattern = p;
+            displayName = d;
+        }
+
+
+        @Override
+        public String toString() {
+            return displayName;
+        }
+    }
+
+    /**
+     * Method gets the selected Pattern in Game of Life.
+     * If user selected PatternType.Draw, used can only use
+     * methods in the scope. Else he can only use the
+     * onDrawSelectedPattern method.
+     */
+
+    private void getSelectedPattern() {
+        PatternType selectedPattern = choicePattern.getValue();
+        newPattern = selectedPattern.pattern;
+
+        if (selectedPattern == PatternType.Draw) {
+            canvas.setOnMouseClicked(onClickCellEvent);
+            canvas.setOnMouseDragged(onDragCellEvent);
+        } else {
+            canvas.setOnMouseClicked(onDrawSelectedPattern);
+            canvas.setOnMouseDragged(null);
+
+        }
+    }
+
+
+    /**
+     * EventHandler method for drawing a selected Pattern
+     * on the canvas. Draws the pattern from where user
+     * clicked on canvas.
+     */
+
+    private EventHandler onDrawSelectedPattern = new EventHandler() {
+        @Override
+        public void handle(Event event) {
+
+            int[][] pattern = newPattern;
+            int offsetX = getXPosition(event);
+            int offsetY = getYPosition(event);
+
+            try {
+                for (int x = 0; x < pattern.length; x++) {
+                    for (int y = 0; y < pattern[x].length; y++)
+                        if (pattern[x][y] == 1) {
+                            dynamicGameBoard.cellArrayList.get(x + offsetX).get(y + offsetY).setArrayState(true);
+                            System.out.println("1");
+                        } else if (pattern[x][y] == 0) {
+                            dynamicGameBoard.cellArrayList.get(x + offsetX).get(y + offsetY).setArrayState(false);
+                            System.out.println("0");
+                        }
+                    graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, colorPicker.getValue());
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("ArrayOutOfBound exception catched");
+            }
+        }
+    };
+
+
+    /**
+     * Method returns the y position of a MouseClicked.
+     * Divides the value by cellSize(10) to get exact coordinate.
+     *
+     * @param event Takes a event as parameter.
+     * @return Returns the x coordinate of Mouse click, divided by cellSize.
+     */
+    private int getYPosition(Event event) {
+        MouseEvent e = (MouseEvent) event;
+        return (int) (e.getY() / 10);
+    }
+
+    /**
+     * Method returns the x position of a MouseClicked.
+     * Divides the value by cellSize(10) to get exact coordinate.
+     *
+     * @param event Takes a event as parameter.
+     * @return Returns the x coordinate of Mouse click, divided by cellSize.
+     */
+
+    private int getXPosition(Event event) {
+        MouseEvent e = (MouseEvent) event;
+        return (int) (e.getX() / 10);
+    }
+
+    /**
+     * Method exits the program.
+     */
+
+    public void exitProgram() {
+        System.exit(0);
+    }
+
+    /*private void showGenerationText() {
+        showGen.textProperty().bind(Bindings.concat(board.generation));
+    }
+
+    private void clearGenerationText() {
+        board.generation.set(0);
+    }*/
+
+
+     /*  private void onChangeColor() {
+        colorPicker.setOnAction(e -> {
+            aliveCellColor = colorPicker.getValue();
+            gdb.drawNextGen(gc, aliveCellColor, board);
+        });
+    }*/
+
+     /*public void onClear() {
+        board.clearCellState();
+        gdb.clearBoard(gc);
+        startPauseBtn.setText("Start");
+        timer.stop();
+        clearGenerationText();
+    }*/
+
+        /*public void nextGen() {
+        timer.stop();
+        startPauseBtn.setText("Start");
+        gdb.updateBoard(gc);
+        gdb.drawNextGen(gc, aliveCellColor, board);
+        board.generation.set(board.generation.get() + 1);
+    }*/
+
+
+      /*private EventHandler onClickCellEvent = new EventHandler() {
+        @Override
+        public void handle(Event event) {
+            int x = getXPosition(event);
+            int y = getYPosition(event);
+
+            if (x == -1 || y == -1 || x == board.gridWidth || y == board.gridHeight) {
+                throw new ArrayIndexOutOfBoundsException();
+            }
+            if (gdb.cellGrid[x][y].getState()) {
+                gdb.cellGrid[x][y].setState(false);
+
+                gc.setFill(Color.LIGHTGREY);
+                gc.fillRect(x * board.cellWidth, y * board.cellHeight, board.cellHeight - 1, board.cellWidth - 1);
+
+            } else if (!gdb.cellGrid[x][y].getState()) {
+                gdb.cellGrid[x][y].setState(true);
+                gc.setFill(aliveCellColor);
+                gc.fillRect(x * board.cellWidth, y * board.cellHeight, board.cellHeight - 1, board.cellWidth - 1);
+
+
+            }
+        }
+    };*/
+
+
+
+
+      /*public EventHandler onDragCellEvent = new EventHandler() {
+        @Override
+        public void handle(Event event) {
+            int x = getXPosition(event);
+            int y = getYPosition(event);
+            try {
+                if (!gdb.cellGrid[x][y].getState()) {
+                    gdb.cellGrid[x][y].setState(true);
+
+                    gc.setFill(aliveCellColor);
+                    gc.fillRect(x * board.cellWidth, y * board.cellHeight, board.cellHeight - 1, board.cellWidth - 1);
+
+                }
+            } catch (ArrayIndexOutOfBoundsException ae) {
+
+            }
+        }
+    };*/
+
+     /*public void onReadURLFile() throws Exception  {
 
         FileHandler fileHandler = new FileHandler();
 
@@ -517,68 +707,7 @@ public class Controller implements Initializable {
     }*/
 
 
-    private enum PatternType {
-        Glider("Glider", glider),
-        Exploder("Exploder", exploder),
-        Painting("Painting", painting),
-        Draw("Draw your own", new int[][]{});
-
-        private int[][] pattern;
-        private String displayName;
-
-        PatternType(String d, int[][] p) {
-            pattern = p;
-            displayName = d;
-        }
-
-
-        @Override
-        public String toString() {
-            return displayName;
-        }
-    }
-
-    private void getSelectedPattern() {
-        PatternType selectedPattern = choicePattern.getValue();
-        newPattern = selectedPattern.pattern;
-
-        if (selectedPattern == PatternType.Draw) {
-            canvas.setOnMouseClicked(onClickCellEvent);
-            canvas.setOnMouseDragged(onDragCellEvent);
-        } else {
-            canvas.setOnMouseClicked(onDrawSelectedPattern);
-            canvas.setOnMouseDragged(null);
-
-        }
-    }
-
-    private EventHandler onDrawSelectedPattern = new EventHandler() {
-        @Override
-        public void handle(Event event) {
-
-            int[][] pattern = newPattern;
-            int offsetX = getXPosition(event);
-            int offsetY = getYPosition(event);
-
-            try {
-                for (int x = 0; x < pattern.length; x++) {
-                    for (int y = 0; y < pattern[x].length; y++)
-                        if (pattern[x][y] == 1) {
-                            dynamicGameBoard.cellArrayList.get(x + offsetX).get(y + offsetY).setArrayState(true);
-                            System.out.println("1");
-                        } else if (pattern[x][y] == 0) {
-                            dynamicGameBoard.cellArrayList.get(x + offsetX).get(y + offsetY).setArrayState(false);
-                            System.out.println("0");
-                        }
-                    graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, colorPicker.getValue());
-                }
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("ArrayOutOfBound exception catched");
-            }
-        }
-    };
-
-    /*private EventHandler onDrawSelectedPattern = new EventHandler(){
+     /*private EventHandler onDrawSelectedPattern = new EventHandler(){
         @Override
         public void handle(Event event) {
 
@@ -604,15 +733,7 @@ public class Controller implements Initializable {
         }
     };*/
 
-    private int getYPosition(Event event) {
-        MouseEvent e = (MouseEvent) event;
-        return (int) (e.getY() / 10);
-    }
 
-    private int getXPosition(Event event) {
-        MouseEvent e = (MouseEvent) event;
-        return (int) (e.getX() / 10);
-    }
 
    /* private int getYPosition(Event event) {
         MouseEvent e = (MouseEvent) event;
@@ -824,9 +945,7 @@ public class Controller implements Initializable {
 */
 
 
-    public void exitProgram() {
-        System.exit(0);
-    }
+
 }
 
 

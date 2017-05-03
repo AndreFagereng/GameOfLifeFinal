@@ -12,7 +12,7 @@ public class Patterns {
     /**
      *
      * Creates the static pre-made Patterns.
-     * 
+     *
      */
     static{
         glider = new int[][] {{0,0,1},{1,0,1},{0,1,1}};
