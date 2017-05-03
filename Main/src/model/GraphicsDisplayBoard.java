@@ -18,6 +18,18 @@ public class GraphicsDisplayBoard {
     Color bkGroundColor = Color.LIGHTGREY;
     public static int[][] newPattern;
 
+    /**
+     * GraphicDisplayBoard constructor.
+     *
+     * Old code used for the static version of the Game.
+     * New code has been optimized, but we did not want to delete any
+     * old code to see the progress of our coding.
+     *
+     *
+     * @param gc
+     * @param canvas
+     * @deprecated
+     */
 
     public GraphicsDisplayBoard(GraphicsContext gc, Canvas canvas) {
 

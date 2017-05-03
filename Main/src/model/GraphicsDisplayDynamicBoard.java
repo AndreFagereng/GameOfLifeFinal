@@ -15,6 +15,18 @@ public class GraphicsDisplayDynamicBoard extends Controller {
 
     }
 
+
+    /**
+     * This method is the main method for drawing the nextGeneration of
+     * the game. It iterates through the chosen DynamicGameBoard and
+     * checks if cells are alive. If they live, they are drawn with a color
+     * chosen by the ColorPicker. Dead cells are also drawn but with white background.
+     *
+     * @param dynamicGameBoard Draws on the chosen DynamicBoard
+     * @param gc Uses GraphicContext to draw on the canvas.
+     * @param color Color is used as parameter to get the ColorPicker value in Controller Class.
+     */
+
     public void drawNextGen(DynamicGameBoard dynamicGameBoard, GraphicsContext gc, Color color){
 
 
@@ -33,6 +45,15 @@ public class GraphicsDisplayDynamicBoard extends Controller {
     }
 
 
+    /**
+     *
+     * This method iterates through a dynamicBoard and draws all
+     * aliveCells to white. Indicating that all is dead.
+     *
+     * @param dynamicGameBoard Draws on the chosen DynamicBoard
+     * @param gc Uses GraphicContext to draw on the canvas.
+     */
+
     public void clearDrawing(DynamicGameBoard dynamicGameBoard, GraphicsContext gc){
         for (int x = 0; x < dynamicGameBoard.cellArrayList.size(); x++) {
             for (int y = 0; y < dynamicGameBoard.tempArray.size(); y++) {
@@ -44,11 +65,20 @@ public class GraphicsDisplayDynamicBoard extends Controller {
         }
     }
 
+    /**
+     * A getter to return the used cellSize for each drawn cell.
+     * @return Return an int variable.
+     */
 
     public int getCellSize(){
         return cellSize;
     }
 
+
+    /**
+     * A setter for setting the cellSize to a new value.
+     * @param cellSize Takes and int to set a new cellSize.
+     */
     public void setCellSize(int cellSize){
         this.cellSize = cellSize;
     }

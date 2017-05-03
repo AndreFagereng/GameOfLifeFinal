@@ -18,11 +18,30 @@ public class FileHandler {
     private int x = 0;
     private int y = 0;
 
+    /**
+     * This method uses readFileReturnString to return a string of a URL file.
+     * Method is made to seperate URL reading from OpenFile reading.
+     *
+     * @param bufferedReader Takes a bufferedReader to read a file.
+     * @return Returns a String of the read file.
+     * @throws Exception Throws the exception.
+     */
+
     public String readURLFile(BufferedReader bufferedReader)throws Exception{
 
         return readFileReturnString(bufferedReader);
     }
 
+
+    /**
+     * This method takes a file and throws it into the readFileReturnString
+     * method and returns the String. Methods are separated to be more lucid,
+     * and to be used by other methods.
+     *
+     * @param RLEFile Takes a file, converts it to a String.
+     * @return Return the String of the read file.
+     * @throws Exception Throws any Exceptions, handled in Controller/PatternController.
+     */
     public String readOpenFile(File RLEFile) throws Exception{
 
         FileReader fileReader = new FileReader(RLEFile);
@@ -31,6 +50,23 @@ public class FileHandler {
         return readFileReturnString(bufferedReader);
 
     }
+
+    /**
+     * This method takes a BufferedReader as parameter which is used
+     * to read a file and return a StringBuilder. It checks if there is any
+     * signs/letters that is used in the GameOfLife RLE format. If the methods
+     * finds a number, it multiplies that number with the next sign.
+     *
+     * 3o = ooo
+     * 2b = bb
+     * etc.
+     *
+     * Method used by readURLFile and readOpenFile.
+     *
+     * @param bufferedReader Uses a bufferedReader to read a file.
+     * @return Returns a String which is basically a StringBuilder.toString().
+     * @throws Exception Throws any exceptions.
+     */
 
 
     public String readFileReturnString(BufferedReader bufferedReader) throws Exception{
@@ -71,6 +107,16 @@ public class FileHandler {
         return stringBuilder.toString();
 
     }
+
+    /**
+     * This method is used to set new values of the current cellArrayList.
+     * It reads a String and creates a pattern in the main cellArrayList.
+     * Starts with offsetY and offsetX to start setting the pattern in the center
+     * of the screen.
+     *
+     * @param RLEText String is read and creates new boolean state values in the cellArrayList.
+     * @param dynamicGameBoard Uses the used DynamicGameBoard.
+     */
 
     public void readStringToBoard(String RLEText, DynamicGameBoard dynamicGameBoard){
 

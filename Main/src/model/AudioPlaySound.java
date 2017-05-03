@@ -22,6 +22,15 @@ public class AudioPlaySound implements LineListener {
     Clip clip;
     private FloatControl floatVolume;
     int lastFrame = 0;
+    boolean playCompleted;
+
+    /**
+     * AudioPlaySound constructor
+     *
+     * Creates an object of AudioPlaySound class and tries to load
+     * a audioFile(.wav) using the loadAudioFile method.
+     *
+     */
 
     public AudioPlaySound() {
 
@@ -43,6 +52,16 @@ public class AudioPlaySound implements LineListener {
 
     }
 
+    /**
+     * This method loads a audioFile to the Game.
+     *
+     * @param file File is a Audio File.
+     * @throws IOException Throws IOException.
+     * @throws UnsupportedAudioFileException Throws UnsupportedAudioFileException.
+     * @throws LineUnavailableException Throws LineUnavailableException.
+     * @throws InterruptedException Throws InterruptedException.
+     */
+
     protected void loadAudioFile(File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
         try {
 
@@ -62,6 +81,13 @@ public class AudioPlaySound implements LineListener {
         floatVolume.setValue(-25.0f);
     }
 
+
+    /**
+     * This method gets the lastFrame position of the (audio) clip
+     * and resumes the audio from where it stopped.
+     */
+
+
     public void resume() {
 
         clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -73,13 +99,15 @@ public class AudioPlaySound implements LineListener {
             } else {
                 clip.setFramePosition(0);
             }
-
         }
-
         clip.start();
-
-
     }
+
+
+    /**
+     * This method stores the (audio) clip FramePosition in lastFrame
+     * and pauses the audio.
+     */
 
     public void pause() {
         if (clip != null && clip.isRunning()) {
@@ -91,7 +119,14 @@ public class AudioPlaySound implements LineListener {
     }
 
 
-    boolean playCompleted;
+    /**
+     * This methods overrides the LineListener update method.
+     *
+     * Prints out when the playback has started and stopped.
+     *
+     * @param event LineEvent type.
+     */
+
 
     @Override
     public void update(LineEvent event) {
