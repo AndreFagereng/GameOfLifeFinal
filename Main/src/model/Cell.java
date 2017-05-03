@@ -8,10 +8,24 @@ public class Cell {
     private boolean listCellState = false;
     private boolean copyListCellState = false;
 
+
+    /**
+     * Cell constructor
+     *
+     * Creates a cell object with a boolean state.
+     *
+     * @param state value of the cell state
+     */
+
     public Cell(boolean state){
         this.listCellState = state;
     }
 
+
+    /**
+     * 
+     * @return
+     */
 
     public boolean getArrayState(){ return listCellState;}
     public boolean getCopyArrayState(){ return copyListCellState;}
