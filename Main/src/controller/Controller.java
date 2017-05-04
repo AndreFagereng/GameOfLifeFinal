@@ -154,7 +154,7 @@ public class Controller implements Initializable {
     /**
      * Method mutes and un-mutes Audio clip.
      */
-    
+
     public void onMuteSound() {
         if (!checkBoxSound.isSelected()) {
             audioPlaySound.pause();
@@ -219,7 +219,7 @@ public class Controller implements Initializable {
 
     /**
      * Method is used as timer for the Game.
-     * Commented code is old code.
+     * Commented code is old code for static version of the game.
      */
     public void timerMethod() {
         speed = 0;
@@ -242,7 +242,7 @@ public class Controller implements Initializable {
 
     /**
      * Method used for Clear button.
-     * Clears all living cells.
+     * Clears all living cells and stops the timer.
      */
 
     public void onClear() {
@@ -256,7 +256,7 @@ public class Controller implements Initializable {
 
     /**
      * Method used for Start/Stop button.
-     * Stops the timer for Game of Life.
+     * Stops the timer for Game of Life and stops the timer.
      */
 
     public void onStop() {
@@ -266,7 +266,7 @@ public class Controller implements Initializable {
 
     /**
      * Method used for Start/Stop button.
-     * Starts the timer for Game of Life.
+     * Starts the timer for Game of Life and starts the timer.
      */
 
     public void onStart() {
