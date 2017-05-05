@@ -72,7 +72,6 @@ public class DynamicGameBoard {
     public void onNextGen() {
         collisionChecker();
         cellsAlive.set(0);
-        System.out.println(cellArrayList.size());
         checkNeighbours(cellArrayList, tempArray);
         copyArrayList();
 
@@ -297,9 +296,7 @@ public class DynamicGameBoard {
                     setCopyState(x, y, cellArrayList.get(x).get(y).getArrayState());
                     // lives if 3 neighbours
                 } else if (neighbour == 3) {
-                    setCopyState(x, y, true);
-                    ;
-                }
+                    setCopyState(x, y, true);               }
 
                 //System.out.print(neighbour + " ");
             }

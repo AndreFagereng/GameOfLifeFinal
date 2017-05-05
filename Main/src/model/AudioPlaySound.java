@@ -13,7 +13,12 @@ import java.io.IOException;
 public class AudioPlaySound implements LineListener {
 
 
-    private String audioFilePath = "../GameOfLifeFinal/Resources/Sound/ChillingMusic.wav";
+    /**
+     * This audio is made by a friend, so all credits to Sindre Timberlid for
+     * making this to us.
+     */
+
+    private String audioFilePath = "../GameOfLifeFinal/Resources/Sound/EightBit - Game Of Life.wav";
 
     File file = new File(audioFilePath);
     AudioInputStream audioInputStream;
@@ -72,7 +77,8 @@ public class AudioPlaySound implements LineListener {
 
 
         } catch (IllegalArgumentException e) {
-            System.out.println("Illegal Arguemnt");
+            e.printStackTrace();
+            System.out.println("Illegal Argument");
         }
 
         clip.open(audioInputStream);

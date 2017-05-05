@@ -47,7 +47,7 @@
                 <Font name="SimSun" size="18.0" />
             </font>
         </Button>
-        <Slider fx:id="zoomSlider" blockIncrement="1.0" layoutX="699.0" layoutY="603.0" majorTickUnit="4.0" min="5.0" max="50.0" minorTickCount="1" prefHeight="17.0" prefWidth="100.0" value="5.0" />
+        <Slider fx:id="zoomSlider" blockIncrement="1.0" layoutX="699.0" layoutY="603.0" majorTickUnit="4.0" max="50.0" min="5.0" minorTickCount="1" prefHeight="17.0" prefWidth="100.0" value="5.0" />
         <Text layoutX="85.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patterns :" wrappingWidth="96.06005859375">
             <font>
                 <Font name="SimSun" size="18.0" />
@@ -74,7 +74,7 @@
                 <Font size="18.0" />
             </font>
         </Text>
-        <Slider fx:id="speedSlider" blockIncrement="1.0" layoutX="546.0" layoutY="602.0" min="-25.0" max="1.0" prefHeight="17.0" prefWidth="100.0" value="-25.0" />
+        <Slider fx:id="speedSlider" blockIncrement="1.0" layoutX="546.0" layoutY="602.0" max="1.0" min="-25.0" prefHeight="17.0" prefWidth="100.0" value="-25.0" />
         <Text layoutX="530.0" layoutY="618.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-">
             <font>
                 <Font size="18.0" />
@@ -105,11 +105,6 @@
             </font>
         </Button>
       <CheckBox fx:id="checkBoxSound" layoutX="852.0" layoutY="95.0" mnemonicParsing="false" onAction="#onMuteSound" text="Sound" />
-      <Text layoutX="833.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FPS:" wrappingWidth="32.0">
-         <font>
-            <Font name="SimSun" size="16.0" />
-         </font>
-      </Text>
       <Text layoutX="831.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ALIVE:" wrappingWidth="53.00001502037048">
          <font>
             <Font name="SimSun" size="16.0" />

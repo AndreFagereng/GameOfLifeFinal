@@ -90,7 +90,7 @@ public class Controller implements Initializable {
         gc = canvas.getGraphicsContext2D();
         audioPlaySound = new AudioPlaySound();
 
-        dynamicGameBoard = new DynamicGameBoard(100, 100, false);
+        dynamicGameBoard = new DynamicGameBoard(250, 250, false);
         graphicsDisplayDynamicBoard = new GraphicsDisplayDynamicBoard();
 
 
