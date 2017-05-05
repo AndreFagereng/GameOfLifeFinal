@@ -18,7 +18,7 @@ public class AudioPlaySound implements LineListener {
      * making this to us.
      */
 
-    private String audioFilePath = "../GameOfLifeFinal/Resources/Sound/EightBit - Game Of Life.wav";
+    private String audioFilePath = "C:/Users/Jegern/IdeaProjects/GameOfLifeFinal/Resources/Sound/EightBit.wav";
 
     File file = new File(audioFilePath);
     AudioInputStream audioInputStream;
