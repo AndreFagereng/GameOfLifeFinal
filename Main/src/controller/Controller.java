@@ -363,7 +363,7 @@ public class Controller implements Initializable {
      */
     public void createPattern() throws Exception {
         onStop();
-        Parent root = FXMLLoader.load(getClass().getResource("../view/createOwnPattern.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/view/createOwnPattern.fxml"));
         stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setResizable(false);
