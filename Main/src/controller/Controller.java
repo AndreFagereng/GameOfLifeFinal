@@ -527,10 +527,8 @@ public class Controller implements Initializable {
                     for (int y = 0; y < pattern[x].length; y++)
                         if (pattern[x][y] == 1) {
                             dynamicGameBoard.cellArrayList.get(x + offsetX).get(y + offsetY).setArrayState(true);
-                            System.out.println("1");
                         } else if (pattern[x][y] == 0) {
                             dynamicGameBoard.cellArrayList.get(x + offsetX).get(y + offsetY).setArrayState(false);
-                            System.out.println("0");
                         }
                     graphicsDisplayDynamicBoard.drawNextGen(dynamicGameBoard, gc, colorPicker.getValue());
                 }

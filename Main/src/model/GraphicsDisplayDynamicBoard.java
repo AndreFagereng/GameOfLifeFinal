@@ -15,7 +15,6 @@ public class GraphicsDisplayDynamicBoard extends Controller {
 
     }
 
-
     /**
      * This method is the main method for drawing the nextGeneration of
      * the game. It iterates through the chosen DynamicGameBoard and
@@ -43,7 +42,6 @@ public class GraphicsDisplayDynamicBoard extends Controller {
             }
         }
     }
-
 
     /**
      *

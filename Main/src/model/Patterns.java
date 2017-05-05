@@ -5,9 +5,7 @@ package model;
  */
 public class Patterns {
 
-
     public static int[][] glider, exploder, painting;
-
 
     /**
      *
@@ -24,5 +22,4 @@ public class Patterns {
         painting = new int[][] {{1,1,1},{1,0,1},{1,0,1},{1,0,1},{1,0,1},{1,0,1},{1,0,1},{1,0,1},{1,1,1}};
 
     }
-
 }
