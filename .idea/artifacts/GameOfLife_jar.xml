@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GameOfLife:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/GameOfLife_jar</output-path>
+    <root id="archive" name="GameOfLife.jar">
+      <element id="module-output" name="GameOfLife" />
+      <element id="extracted-dir" path="$APPLICATION_HOME_DIR$/lib/groovy-all-2.4.6.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
