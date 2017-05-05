@@ -4,24 +4,21 @@
 }
 
 #startPauseBtn{
-	-fx-background-color: #555;
-	-fx-text-fill: #f6f6f6;
+	
 	-fx-font-family: "Arial";
 	-fx-font-weight: 100;
 	-fx-font-size: 25px;
 }
 
 #nextGeneration {
-	-fx-background-color: #888;
-	-fx-text-fill: #f6f6f6;
+
 	-fx-font-family: "Arial";
 	-fx-font-weight: 100;
 	-fx-font-size: 25px;
 }
 
 #clearBtn{
-	-fx-background-color: #888;
-	-fx-text-fill: #f6f6f6;
+
 	-fx-font-family: "Arial";
 	-fx-font-weight: 100;
 	-fx-font-size: 25px;
