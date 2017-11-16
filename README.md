@@ -19,3 +19,5 @@ Unit testing
 ... and many more!
 
 Here is an early prototype GUI of this program screenshot
+
++![screenshot](https://github.com/Nguy3n/GameOfLife/blob/master/screenshots/Skjermbilde_versjon2.png)
